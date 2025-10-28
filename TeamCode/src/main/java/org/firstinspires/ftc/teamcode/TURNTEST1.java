@@ -83,6 +83,7 @@ public class TURNTEST1 extends LinearOpMode {
                         hasLockedTagInInit = true;
                         telemetry.addData("AprilTag ", firstDetectedTagId);
                         Goal_update(firstDetectedTagId);
+                        telemetry.addData("Goal", show_list(List_goal));
                         break;
                     }
                 }
@@ -131,6 +132,7 @@ public class TURNTEST1 extends LinearOpMode {
                             firstGreenX = block.x;
                             hasLockedGreen = true;
                             telemetry.addData("首次绿色X坐标: ", firstGreenX);
+                            telemetry.update();
                             break;
                         }
                     }
@@ -142,6 +144,8 @@ public class TURNTEST1 extends LinearOpMode {
                 //开始计算以及移动
                 //默认已经读取到了目标顺序
                 Current_update(firstGreenX); //计算当前小球位置
+                telemetry.addData("Current", show_list(List_current));
+                telemetry.update();
                 Calculate_order();//计算应该旋转的顺序
                 controlTurn();
                 hasExecutedCombinedAction = true;
@@ -200,7 +204,7 @@ public class TURNTEST1 extends LinearOpMode {
             //计算顺序
             for (int i = 0; i < List_goal.length; i++) {
                 int index = 0;
-                while (List_goal[i] != List_current[pool.get(index)]) index++;
+                while (List_goal[i] != List_current[pool.get(index)] && index<pool.size()-1) index++;
                 List_order[i] = pool.get(index);
                 pool.remove(index);
             }
@@ -218,6 +222,16 @@ public class TURNTEST1 extends LinearOpMode {
         } catch (ArithmeticException e) {  //小球数量有问题 比如吸进了俩绿色
 
         }
+    }
+
+    //输出数组
+    public String show_list(int[] a){
+        String ans="",temp="";
+        for (int e:a){
+            temp = ans + e +" ";
+            ans = temp;
+        }
+        return ans;
     }
 
 

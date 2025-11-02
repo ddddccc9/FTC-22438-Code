@@ -10,6 +10,7 @@ public class fire_test extends LinearOpMode {
 
     private DcMotor motor_upper;
     private DcMotor motor_lower;
+    private DcMotor motor_intake;
     private Servo lift;
     private Servo turn;
     private double Angle;
@@ -22,6 +23,7 @@ public class fire_test extends LinearOpMode {
 
         motor_upper = hardwareMap.get(DcMotor.class, "motor_upper");
         motor_lower = hardwareMap.get(DcMotor.class, "motor_lower");
+        motor_intake = hardwareMap.get(DcMotor.class, "motor_intake");
         lift = hardwareMap.get(Servo.class, "servo_lift");
         turn = hardwareMap.get(Servo.class, "servo_turn");
         //lf.setTargetPosition(0);
@@ -69,6 +71,13 @@ public class fire_test extends LinearOpMode {
                 }
                 else {
                     lift.setPosition(0);
+                }
+
+                if(gamepad1.dpad_down){
+                    motor_intake.setPower(1);
+                }
+                else{
+                    motor_intake.setPower(0);
                 }
 
 

@@ -27,6 +27,11 @@ public class Base extends LinearOpMode{
     private Servo lift;
     private Servo turn;
 
+    private int LF;
+    private int LB;
+    private int RF;
+    private int RB;
+
     private final double[] Data_turn = {0.19, 0.563, 0.94,0,0.37,0.75};
 
     public void runOpMode() {}
@@ -37,6 +42,11 @@ public class Base extends LinearOpMode{
         motor_lb=lb1;
         motor_rf=rf1;
         motor_rb=rb1;
+
+        LF= motor_lf.getCurrentPosition();
+        LB=motor_lb.getCurrentPosition();
+        RF=motor_rf.getCurrentPosition();
+        RB=motor_rb.getCurrentPosition();
 
         lift=lift1;
         turn=turn1;
@@ -63,6 +73,40 @@ public class Base extends LinearOpMode{
         sleep(1000);
         lift.setPosition(0);
         sleep(1000);
+    }
+
+    public void Move(double power,double x,double y,double angle){
+        angle = -angle;
+        x = -x;
+        motor_lf.setPower(power * (y + (x + angle)));
+        motor_lb.setPower(power * (y - (x - angle)));
+        motor_rf.setPower(power * (y - (x + angle)));
+        motor_rb.setPower(power * (y + (x - angle)));
+    }
+
+    public void MoveTo(double power,int x,int y,int angle,Boolean wait){
+        LF= motor_lf.getCurrentPosition();
+        LB=motor_lb.getCurrentPosition();
+        RF=motor_rf.getCurrentPosition();
+        RB=motor_rb.getCurrentPosition();
+
+        motor_lf.setPower(power);
+        motor_lb.setPower(power);
+        motor_rf.setPower(power);
+        motor_rb.setPower(power);
+
+        motor_lf.setTargetPosition(LF+(y + (x + angle)));
+        motor_lb.setTargetPosition(LB+(y - (x - angle)));
+        motor_rf.setTargetPosition(RF+(y - (x + angle)));
+        motor_rb.setTargetPosition(RB+(y + (x - angle)));
+
+        if(wait){
+            while (motor_lf.isBusy()){
+                sleep(10);
+            }
+        }
+
+
     }
 
 }

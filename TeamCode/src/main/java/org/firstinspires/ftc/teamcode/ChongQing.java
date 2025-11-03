@@ -72,8 +72,8 @@ public class ChongQing extends LinearOpMode {
 
                 //玩家1
                 double y = gamepad1.left_stick_y;
-                double x = -gamepad1.left_stick_x;
-                double angle = -gamepad1.right_stick_x*0.9;
+                double x = gamepad1.left_stick_x;
+                double angle = gamepad1.right_stick_x*0.9;
 
                 if(state_2 && gamepad1.y){
                     state_2=false;
@@ -91,6 +91,7 @@ public class ChongQing extends LinearOpMode {
                     power=1;
                 }
 
+                base.Move(power,x,y,angle);
                 motor_lf.setPower(power * (y + (x + angle)));
                 motor_lb.setPower(power * (y - (x - angle)));
                 motor_rf.setPower(power * (y - (x + angle)));

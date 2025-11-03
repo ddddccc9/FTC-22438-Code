@@ -69,13 +69,39 @@ public class ChongQing extends LinearOpMode {
         if (opModeIsActive()) {
 
             while (opModeIsActive()) {
+
+                //玩家1
                 double y = gamepad1.left_stick_y;
                 double x = -gamepad1.left_stick_x;
-                double angle = -gamepad1.right_stick_x;
+                double angle = -gamepad1.right_stick_x*0.9;
+
+                if(state_2 && gamepad1.y){
+                    state_2=false;
+                    state_2_1 = (state_2_1+1)%2;
+                    motor_intake.setPower(state_2_1);
+                }
+                if(!state_2 && !gamepad1.y){
+                    state_2=true;
+                }
+
+                if(gamepad1.left_trigger>0.1){
+                    power = 1-(gamepad1.left_trigger)*0.5;
+                }
+                else {
+                    power=1;
+                }
+
+                motor_lf.setPower(power * (y + (x + angle)));
+                motor_lb.setPower(power * (y - (x - angle)));
+                motor_rf.setPower(power * (y - (x + angle)));
+                motor_rb.setPower(power * (y + (x - angle)));
 
 
-                if(gamepad1.a){
-                    if(current_id<3){
+
+                //玩家2
+
+                if(gamepad2.a){
+                    if(current_id<3){//防止舵机打到转盘
                         current_id=3;
                         base.TURN(current_id,true);
                     }
@@ -112,23 +138,6 @@ public class ChongQing extends LinearOpMode {
 
 
 
-
-
-                if(state_2 && gamepad1.y){
-                    state_2=false;
-                    state_2_1 = (state_2_1+1)%2;
-                    motor_intake.setPower(state_2_1);
-                }
-                if(!state_2 && !gamepad1.y){
-                    state_2=true;
-                }
-
-
-
-                motor_lf.setPower(power * (y + (x + angle)));
-                motor_lb.setPower(power * (y - (x - angle)));
-                motor_rf.setPower(power * (y - (x + angle)));
-                motor_rb.setPower(power * (y + (x - angle)));
 
                 telemetry.addData("id", current_id);
 

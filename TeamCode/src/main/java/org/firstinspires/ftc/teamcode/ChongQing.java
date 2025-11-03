@@ -23,12 +23,13 @@ public class ChongQing extends LinearOpMode {
     private boolean state_1 = true;
     private boolean state_2 = true;
     private int state_2_1 = 0;
+    private boolean state_fire =true;
 
     private Base base;
 
     private Fire fire1 = new Fire();
 
-    private int current_id =0;
+    private int current_id =-1;
 
 
     @Override
@@ -84,63 +85,70 @@ public class ChongQing extends LinearOpMode {
                     state_2=true;
                 }
 
-                if(gamepad1.left_trigger>0.1){
-                    power = 1-(gamepad1.left_trigger)*0.5;
+                if(gamepad1.left_trigger>0.5){
+                    power = 0.8;
                 }
                 else {
-                    power=1;
+                    power=0.3;
                 }
 
                 base.Move(power,x,y,angle);
-                motor_lf.setPower(power * (y + (x + angle)));
-                motor_lb.setPower(power * (y - (x - angle)));
-                motor_rf.setPower(power * (y - (x + angle)));
-                motor_rb.setPower(power * (y + (x - angle)));
+
+                if(gamepad1.a){
+                    motor_intake.setDirection(DcMotor.Direction.REVERSE);
+                }
+                else {
+                    motor_intake.setDirection(DcMotor.Direction.FORWARD);
+                }
 
 
 
                 //玩家2
 
-                if(gamepad2.a){
-                    if(current_id<3){//防止舵机打到转盘
-                        current_id=3;
-                        base.TURN(current_id,true);
-                    }
+                if(gamepad2.a && state_fire){
+                    state_fire=false;
                     fire1.start();
                 }
 
-                if(gamepad2.right_trigger>0.5){
-                    if(gamepad2.dpad_down || gamepad2.dpad_right || gamepad2.dpad_left){
-                        if(gamepad2.dpad_down){
-                            current_id=0;
-                        }
-                        else if(gamepad2.dpad_left){
-                            current_id=1;
-                        } else if (gamepad2.dpad_right) {
-                            current_id=2;
-                        }
-                        base.TURN(current_id,false);
-                    }
+
+                if(current_id==-1){
+                    current_id=1;
+                    base.TURN(current_id,false);
                 }
-                else{
-                    if(gamepad2.dpad_down || gamepad2.dpad_right || gamepad2.dpad_left){
-                        if(gamepad2.dpad_down){
-                            current_id=3;
-                        }
-                        else if(gamepad2.dpad_left){
-                            current_id=4;
-                        } else if (gamepad2.dpad_right) {
-                            current_id=5;
-                        }
-                        base.TURN(current_id,false);
+                if(gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left){
+                    if(gamepad1.dpad_right){
+                        current_id=0;
                     }
+                    else if(gamepad1.dpad_down){
+                        current_id=1;
+                    } else if (gamepad1.dpad_left) {
+                        current_id=2;
+                    }
+                    base.TURN(current_id,false);
                 }
+
+
+                if(gamepad2.dpad_down || gamepad2.dpad_right || gamepad2.dpad_left){
+                    if(gamepad2.dpad_right){
+                        current_id=3;
+                    }
+                    else if(gamepad2.dpad_down){
+                        current_id=4;
+                    } else if (gamepad2.dpad_left) {
+                        current_id=5;
+                    }
+                    base.TURN(current_id,false);
+                }
+
 
 
 
 
 
                 telemetry.addData("id", current_id);
+
+                telemetry.addData("LF", base.GetPos(0));
+                telemetry.addData("LB", base.GetPos(1));
 
 
                 telemetry.update();
@@ -151,9 +159,14 @@ public class ChongQing extends LinearOpMode {
     public class Fire extends Thread{
         public void run(){
             try{
+
+                if(current_id<3){//防止舵机打到转盘
+                    current_id=3;
+                    base.TURN(current_id,true);
+                }
+
                 motor_upper.setPower(1);
                 motor_lower.setPower(1);
-
                 sleep(500);
 
                 base.LIFT();
@@ -161,12 +174,15 @@ public class ChongQing extends LinearOpMode {
                 motor_upper.setPower(0);
                 motor_lower.setPower(0);
 
+                state_fire=true;
+
 
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
         }
     }
+
 
 
 }

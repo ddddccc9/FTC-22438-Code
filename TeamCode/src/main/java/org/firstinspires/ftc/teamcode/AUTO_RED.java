@@ -67,9 +67,13 @@ public class AUTO_RED extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            //移动到点1
             base.MoveTo(0.6,0,2100,0,true);
 
+            //朝向目标
             base.MoveTo(0.2,0,0,300,true);
+
+
 
 
 

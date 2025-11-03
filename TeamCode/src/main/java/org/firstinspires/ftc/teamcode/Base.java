@@ -49,6 +49,7 @@ public class Base extends LinearOpMode{
         RB=motor_rb.getCurrentPosition();
 
         lift=lift1;
+        lift.setPosition(0);
         turn=turn1;
     }
 

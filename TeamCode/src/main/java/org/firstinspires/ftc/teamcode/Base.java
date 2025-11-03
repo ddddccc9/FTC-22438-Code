@@ -48,6 +48,11 @@ public class Base extends LinearOpMode{
         RF=motor_rf.getCurrentPosition();
         RB=motor_rb.getCurrentPosition();
 
+        motor_rf.setDirection(DcMotorSimple.Direction.REVERSE);
+        motor_rb.setDirection(DcMotorSimple.Direction.REVERSE);
+        motor_rf.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor_rb.setDirection(DcMotorSimple.Direction.FORWARD);
+
         lift=lift1;
         lift.setPosition(0);
         turn=turn1;
@@ -102,10 +107,12 @@ public class Base extends LinearOpMode{
         motor_rb.setTargetPosition(RB+(y + (x - angle)));
 
         if(wait){
-            while (motor_lf.isBusy()|| motor_lb.isBusy()||motor_rf.isBusy()||motor_rb.isBusy()){
+            while (!motor_lf.isBusy()|| !motor_lb.isBusy()||!motor_rf.isBusy()||!motor_rb.isBusy()){
                 sleep(10);
             }
         }
+
+
 
 
     }

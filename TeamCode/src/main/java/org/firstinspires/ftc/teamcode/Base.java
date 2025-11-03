@@ -90,7 +90,7 @@ public class Base extends LinearOpMode{
         motor_rb.setPower(power * (y + (x - angle)));
     }
 
-    public void MoveTo(double power,int x,int y,int angle,Boolean wait){
+    public void MoveTo(double power,int x,int y,int angle){
         LF= motor_lf.getCurrentPosition();
         LB=motor_lb.getCurrentPosition();
         RF=motor_rf.getCurrentPosition();
@@ -106,11 +106,11 @@ public class Base extends LinearOpMode{
         motor_rf.setTargetPosition(RF+(y - (x + angle)));
         motor_rb.setTargetPosition(RB+(y + (x - angle)));
 
-        if(wait){
-            while (!motor_lf.isBusy()|| !motor_lb.isBusy()||!motor_rf.isBusy()||!motor_rb.isBusy()){
-                sleep(10);
-            }
-        }
+//        if(wait){
+//            while (motor_lf.isBusy()|| motor_lb.isBusy()||motor_rf.isBusy()||motor_rb.isBusy()){
+//                sleep(10);
+//            }
+//        }
 
 
 

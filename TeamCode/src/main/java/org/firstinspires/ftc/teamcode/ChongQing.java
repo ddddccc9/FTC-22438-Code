@@ -27,8 +27,6 @@ public class ChongQing extends LinearOpMode {
     private Base base;
 
     private Fire fire1 = new Fire();
-    private State1 state1 = new State1();
-    private State2 state2 = new State2();
 
     private int current_id =0;
 
@@ -58,7 +56,6 @@ public class ChongQing extends LinearOpMode {
         motor_lower.setDirection(DcMotor.Direction.REVERSE);
 
         base = new Base(motor_lf,motor_lb,motor_rf,motor_rb,lift,turn);
-        base.SetStop(false);
 
 
 
@@ -78,25 +75,41 @@ public class ChongQing extends LinearOpMode {
 
 
                 if(gamepad1.a){
+                    if(current_id<3){
+                        current_id=3;
+                        base.TURN(current_id,true);
+                    }
                     fire1.start();
                 }
 
-
-                if(state_1) {
-                    if (gamepad1.right_trigger > 0.5) {
-                        state_1=false;
-                        current_id = (current_id + 1) % 3;
-                        base.TURN(current_id);
-                        state1.start();
-                    }
-                    if (gamepad1.left_trigger > 0.5) {
-                        state_1=false;
-                        current_id = (current_id - 1) % 3;
-                        if(current_id<0) current_id=2;
-                        base.TURN(current_id);
-                        state1.start();
+                if(gamepad2.right_trigger>0.5){
+                    if(gamepad2.dpad_down || gamepad2.dpad_right || gamepad2.dpad_left){
+                        if(gamepad2.dpad_down){
+                            current_id=0;
+                        }
+                        else if(gamepad2.dpad_left){
+                            current_id=1;
+                        } else if (gamepad2.dpad_right) {
+                            current_id=2;
+                        }
+                        base.TURN(current_id,false);
                     }
                 }
+                else{
+                    if(gamepad2.dpad_down || gamepad2.dpad_right || gamepad2.dpad_left){
+                        if(gamepad2.dpad_down){
+                            current_id=3;
+                        }
+                        else if(gamepad2.dpad_left){
+                            current_id=4;
+                        } else if (gamepad2.dpad_right) {
+                            current_id=5;
+                        }
+                        base.TURN(current_id,false);
+                    }
+                }
+
+
 
 
 
@@ -105,7 +118,9 @@ public class ChongQing extends LinearOpMode {
                     state_2=false;
                     state_2_1 = (state_2_1+1)%2;
                     motor_intake.setPower(state_2_1);
-                    state2.start();
+                }
+                if(!state_2 && !gamepad1.y){
+                    state_2=true;
                 }
 
 
@@ -142,34 +157,7 @@ public class ChongQing extends LinearOpMode {
             }
         }
     }
-    public class State1 extends Thread{
-        public void run(){
-            try{
-                while (gamepad1.right_trigger <0.1 || gamepad1.left_trigger <0.1){
-                    sleep(1);
-                }
-                state_1=true;
 
-
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-    }
-    public class State2 extends Thread{
-        public void run(){
-            try{
-                while (!gamepad1.y){
-                    sleep(1);
-                }
-                state_2=true;
-
-
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-    }
 
 }
 

@@ -26,9 +26,8 @@ public class Base extends LinearOpMode{
     private DcMotor motor_rb;
     private Servo lift;
     private Servo turn;
-    private Boolean stop = true;
 
-    private final double[] Data_turn = {0.19, 0.563, 0.94};
+    private final double[] Data_turn = {0.19, 0.563, 0.94,0,0.37,0.75};
 
     public void runOpMode() {}
 
@@ -43,13 +42,18 @@ public class Base extends LinearOpMode{
         turn=turn1;
     }
 
-    public void SetStop(boolean a){
-        stop = a;
+
+    public void TURN(int id,boolean T) {
+        turn.setPosition(Data_turn[id]);
+        if(T) {
+            sleep(1000);
+        }
     }
 
-    public void TURN(int id) {
-        turn.setPosition(Data_turn[id]);
-        if(stop) {
+
+    public void TURN(double angle,boolean T) {
+        turn.setPosition(angle);
+        if(T) {
             sleep(1000);
         }
     }

@@ -102,7 +102,7 @@ public class Base extends LinearOpMode{
         motor_rb.setTargetPosition(RB+(y + (x - angle)));
 
         if(wait){
-            while (motor_lf.isBusy()){
+            while (motor_lf.isBusy()|| motor_lb.isBusy()||motor_rf.isBusy()||motor_rb.isBusy()){
                 sleep(10);
             }
         }

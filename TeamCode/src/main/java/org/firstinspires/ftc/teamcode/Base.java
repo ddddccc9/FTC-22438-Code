@@ -109,4 +109,20 @@ public class Base extends LinearOpMode{
 
     }
 
+    public int GetPos(int id){
+        if(id==0){
+            return motor_lf.getCurrentPosition();
+        }
+        if(id==1){
+            return motor_lb.getCurrentPosition();
+        }
+        if(id==2){
+            return motor_rf.getCurrentPosition();
+        }
+        if(id==3){
+            return motor_rb.getCurrentPosition();
+        }
+        return -1;
+    }
+
 }

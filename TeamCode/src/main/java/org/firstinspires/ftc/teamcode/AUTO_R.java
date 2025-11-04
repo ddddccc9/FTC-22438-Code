@@ -94,12 +94,12 @@ public class AUTO_R extends LinearOpMode {
 
                 for (int i = 0; i < blocks.length; i++) {
                     telemetry.addData("Block", blocks[i].x);
-                    if (blocks[i].x <= 39 && blocks[i].x >= 33) {
+                    if (blocks[i].x <= 140 && blocks[i].x >= 130) {
                         break loop1;
-                    } else if (blocks[i].y < 130) {
+                    } else if (blocks[i].x < 130) {
                         base.MoveTo(0.2,-20,0,0);
 
-                    } else if (blocks[i].y > 140) {
+                    } else if (blocks[i].x > 140) {
                         base.MoveTo(0.2,20,0,0);
 
                     }

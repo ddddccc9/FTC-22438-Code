@@ -23,6 +23,10 @@ public class AUTO_R extends LinearOpMode {
     private DcMotor lb;
     private DcMotor rf;
     private DcMotor rb;
+    private Servo lift;
+    private Servo turn;
+
+    private Base base;
 
 
     @Override
@@ -34,10 +38,15 @@ public class AUTO_R extends LinearOpMode {
 
         // fS = hardwareMap.get(Servo.class, "fS");
 
-        lf = hardwareMap.get(DcMotor.class, "lf");
-        lb = hardwareMap.get(DcMotor.class, "lb");
-        rf = hardwareMap.get(DcMotor.class, "rf");
-        rb = hardwareMap.get(DcMotor.class, "rb");
+        lf = hardwareMap.get(DcMotor.class, "motor_lf");
+        lb = hardwareMap.get(DcMotor.class, "motor_lb");
+        rf = hardwareMap.get(DcMotor.class, "motor_rf");
+        rb = hardwareMap.get(DcMotor.class, "motor_rb");
+
+        turn = hardwareMap.get(Servo.class, "servo_turn");
+        lift = hardwareMap.get(Servo.class, "servo_lift");
+
+        base=new Base(lf,lb,rf,rb,lift,turn);
         int LF;
         int LB;
         int RB;
@@ -46,24 +55,8 @@ public class AUTO_R extends LinearOpMode {
         int R2;
 
 
-        lf = hardwareMap.get(DcMotor.class, "lf");
-        rf = hardwareMap.get(DcMotor.class, "rf");
-        lb = hardwareMap.get(DcMotor.class, "lb");
-        rb = hardwareMap.get(DcMotor.class, "rb");
-        lf.setTargetPosition(0);
-        lb.setTargetPosition(0);
-        rf.setTargetPosition(0);
-        rb.setTargetPosition(0);
-        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lb.setDirection(DcMotor.Direction.REVERSE);
-        lf.setDirection(DcMotor.Direction.REVERSE);
-        LF = lf.getCurrentPosition();
-        LB = lb.getCurrentPosition();
-        RB = rb.getCurrentPosition();
-        RF = rf.getCurrentPosition();
+
+
 
         rateLimit.expire();
 
@@ -82,20 +75,39 @@ public class AUTO_R extends LinearOpMode {
 
         if (opModeIsActive()) {
 
-
-            LF = lf.getCurrentPosition();
-            LB = lb.getCurrentPosition();
-            RB = rb.getCurrentPosition();
-            RF = rf.getCurrentPosition();
-            lf.setTargetPosition(LF - 450);
-            lf.setPower(1);
-            rb.setTargetPosition(RB + 450);
-            rb.setPower(1);
-            rf.setTargetPosition(RF + 450);
-            rf.setPower(1);
-            lb.setTargetPosition(LB - 450);
-            lb.setPower(1);
+            base.MoveTo(0.5,0,2100,0);
+            sleep(2500);
+            base.MoveTo(0.2,0,0,300);
+            sleep(1000);
+            base.MoveTo(0.5,0,0,360);
             sleep(800);
+            loop1:while(0==0) {
+                if (!rateLimit.hasExpired()) {
+                    continue;
+                }
+                rateLimit.reset();
+
+
+                HuskyLens.Block[] blocks = huskyLens1.blocks();
+
+                telemetry.addData("count", blocks.length);
+
+                for (int i = 0; i < blocks.length; i++) {
+                    telemetry.addData("Block", blocks[i].x);
+                    if (blocks[i].x <= 39 && blocks[i].x >= 33) {
+                        break loop1;
+                    } else if (blocks[i].y < 130) {
+                        base.MoveTo(0.2,-20,0,0);
+
+                    } else if (blocks[i].y > 140) {
+                        base.MoveTo(0.2,20,0,0);
+
+                    }
+                }
+            }
+            base.MoveTo(0.5,850,0,0);
+            sleep(800);
+
 
 
             telemetry.update();

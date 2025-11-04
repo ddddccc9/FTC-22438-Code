@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -38,6 +39,10 @@ public class TURNTEST1 extends LinearOpMode {
     private boolean hasExecutedProgramA = false;
     private boolean hasExecutedCombinedAction = false;
 
+    private DcMotor motor_intake;
+    private DcMotor motor_upper;
+    private DcMotor motor_lower;
+
     //数据表********************************************************************
     private final double[] Data_turn = {0.19, 0.563, 0.94};
     private int[] List_goal = {0, 0, 1};      //0是紫球 1是绿球  三个数分别是左中右
@@ -46,11 +51,39 @@ public class TURNTEST1 extends LinearOpMode {
     private int[] List_order = {0, 1, 2};    //数字是index，用于存储顺序
 
 
+    //主程序入口
     @Override
     public void runOpMode() {
+        Initiation();
+
+
+        waitForStart();
+
+        while (opModeIsActive()) {
+            Update();
+        }
+
+        aprilTagDetectionPipeline.close();
+    }
+
+
+    //所有初始化操作
+    private void Initiation(){
         turn = hardwareMap.get(Servo.class, "servo_turn");
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens1");
         lift = hardwareMap.get(Servo.class, "servo_lift");
+
+        motor_upper = hardwareMap.get(DcMotor.class, "motor_upper");
+        motor_lower = hardwareMap.get(DcMotor.class, "motor_lower");
+        motor_intake = hardwareMap.get(DcMotor.class, "motor_intake");
+
+        motor_upper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor_lower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        motor_lower.setDirection(DcMotor.Direction.REVERSE);
+
+        turn.setPosition(0.19);
+        lift.setPosition(0);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -93,68 +126,61 @@ public class TURNTEST1 extends LinearOpMode {
             telemetry.update();
             sleep(20);
         }
-        turn.setPosition(0.19);
-        lift.setPosition(0);
-        telemetry.update();
-        waitForStart();
+    }
 
-        while (opModeIsActive()) {
-            if (!hasExecutedProgramA) {
-                executeProgramA();
-                hasExecutedProgramA = true;
-                telemetry.update();
-                sleep(500);
-            }
-
-            if (hasExecutedProgramA && !hasStartedHuskyLens) {
-
-
-                rateLimit = new Deadline(READ_PERIOD, TimeUnit.MILLISECONDS);
-                rateLimit.expire();
-
-                if (!huskyLens.knock()) {
-                    telemetry.addData("HuskyLens ", "error");
-                } else {
-                    huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
-                }
-                hasStartedHuskyLens = true;
-                telemetry.update();
-                sleep(500);
-            }
-
-            if (hasStartedHuskyLens && !hasLockedGreen) {
-                if (rateLimit.hasExpired()) {
-                    rateLimit.reset();
-                    HuskyLens.Block[] blocks = huskyLens.blocks();
-
-                    for (HuskyLens.Block block : blocks) {
-                        if (block.id == 1) {
-                            firstGreenX = block.x;
-                            hasLockedGreen = true;
-                            telemetry.addData("首次绿色X坐标: ", firstGreenX);
-                            telemetry.update();
-                            break;
-                        }
-                    }
-
-                }
-            }
-
-            if (hasLockedTagInInit && hasLockedGreen && !hasExecutedCombinedAction) {
-                //开始计算以及移动
-                //默认已经读取到了目标顺序
-                Current_update(firstGreenX); //计算当前小球位置
-                telemetry.addData("Current", show_list(List_current));
-                telemetry.update();
-                Calculate_order();//计算应该旋转的顺序
-                controlTurn();
-                hasExecutedCombinedAction = true;
-            }
-
-
+    //所有循环中操作
+    private void Update(){
+        if (!hasExecutedProgramA) {
+            executeProgramA();
+            hasExecutedProgramA = true;
+            telemetry.update();
+            sleep(500);
         }
 
-        aprilTagDetectionPipeline.close();
+        if (hasExecutedProgramA && !hasStartedHuskyLens) {
+            rateLimit = new Deadline(READ_PERIOD, TimeUnit.MILLISECONDS);
+            rateLimit.expire();
+
+            if (!huskyLens.knock()) {
+                telemetry.addData("HuskyLens ", "error");
+            } else {
+                huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
+            }
+            hasStartedHuskyLens = true;
+            telemetry.update();
+            sleep(500);
+        }
+
+        if (hasStartedHuskyLens && !hasLockedGreen) {
+            if (rateLimit.hasExpired()) {
+                rateLimit.reset();
+                HuskyLens.Block[] blocks = huskyLens.blocks();
+
+                for (HuskyLens.Block block : blocks) {
+                    if (block.id == 1) {
+                        firstGreenX = block.x;
+                        hasLockedGreen = true;
+                        telemetry.addData("首次绿色X坐标: ", firstGreenX);
+                        telemetry.update();
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        //开始发射
+        if (hasLockedTagInInit && hasLockedGreen && !hasExecutedCombinedAction) {
+            //开始计算以及移动
+            //默认已经读取到了目标顺序
+            Current_update(firstGreenX); //计算当前小球位置
+            telemetry.addData("Current", show_list(List_current));
+            telemetry.update();
+
+            Calculate_order();//计算应该旋转的顺序
+            FireAllBalls();//进行所有小球的发射操作
+            hasExecutedCombinedAction = true;
+        }
     }
 
 
@@ -235,12 +261,20 @@ public class TURNTEST1 extends LinearOpMode {
     }
 
 
-    private void controlTurn() {
+    private void FireAllBalls() {
+
+        motor_lower.setPower(1);
+        motor_upper.setPower(1);
 
         for (int j : List_order) {
             TURN(j);
             LIFT();
         }
 
+        motor_lower.setPower(0);
+        motor_upper.setPower(0);
+
     }
+
+
 }

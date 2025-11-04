@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+/*
+该文件制作于学术月，是利用PID算法的底盘，结合外置编码器实现底盘移动
+ */
 
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;

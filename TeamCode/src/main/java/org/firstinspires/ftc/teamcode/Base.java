@@ -48,16 +48,16 @@ public class Base extends LinearOpMode{
         RF=motor_rf.getCurrentPosition();
         RB=motor_rb.getCurrentPosition();
 
-        motor_lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor_lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor_rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor_rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor_lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor_lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor_rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor_rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-        motor_rf.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor_rb.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor_lf.setDirection(DcMotorSimple.Direction.FORWARD);
-        motor_lb.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor_lf.setDirection(DcMotorSimple.Direction.REVERSE);
+        motor_lb.setDirection(DcMotorSimple.Direction.REVERSE);
+        motor_rf.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor_rb.setDirection(DcMotorSimple.Direction.FORWARD);
 
         lift=lift1;
         lift.setPosition(0);

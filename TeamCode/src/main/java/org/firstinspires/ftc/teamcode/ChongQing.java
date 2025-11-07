@@ -147,28 +147,26 @@ public class ChongQing extends LinearOpMode {
         if(gamepad2.a && state_fire){
             state_fire=false;
             new Thread(() -> {
-                try {
-                    //防舵机抬升打到转盘
-                    if(current_id < 3){
-                        current_id = 3;
-                        base.TURN(current_id, true);
-                    }
-
-                    motor_upper.setPower(1);
-                    motor_lower.setPower(1);
-                    Thread.sleep(500);
-
-                    base.LIFT();
-
-                    motor_upper.setPower(0);
-                    motor_lower.setPower(0);
-
-                    state_fire = true;
-
-                } catch(InterruptedException e){
-                    //e.printStackTrace();
+                //防舵机抬升打到转盘
+                if(current_id < 3){
+                    current_id = 3;
+                    base.TURN(current_id, true);
                 }
+
+                base.LIFT();
+
+                state_fire = true;
+
             }).start();
+        }
+
+        if(gamepad2.right_bumper){
+            motor_upper.setPower(1);
+            motor_lower.setPower(1);
+        }
+        else {
+            motor_upper.setPower(0);
+            motor_lower.setPower(0);
         }
 
 

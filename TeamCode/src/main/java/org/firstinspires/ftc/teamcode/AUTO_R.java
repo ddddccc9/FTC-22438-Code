@@ -50,6 +50,9 @@ public class AUTO_R extends LinearOpMode {
 
         motor_upper = hardwareMap.get(DcMotor.class, "motor_upper");
         motor_lower = hardwareMap.get(DcMotor.class, "motor_lower");
+        motor_upper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor_lower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor_lower.setDirection(DcMotor.Direction.REVERSE);
 
         base=new Base(lf,lb,rf,rb,lift,turn,1);
         int LF;
@@ -80,18 +83,20 @@ public class AUTO_R extends LinearOpMode {
 
         if (opModeIsActive()) {
 
-            base.MoveTo(0.5,0,2100,0);
-            base.MoveTo(0.2,0,0,300);
+            base.MoveToLinear(0.65,0,2100,0);
 
+            base.MoveToLinear(0.3,0,0,300);
+
+            motor_upper.setPower(1);
+            motor_lower.setPower(1);
             for(int i=0;i<3;i++){
                 base.TURN(3+i, true);
-                motor_upper.setPower(1);
-                motor_lower.setPower(1);
                 sleep(500);
-                //base.LIFT();
-                motor_upper.setPower(0);
-                motor_lower.setPower(0);
+                base.LIFT();
+
             }
+            motor_upper.setPower(0);
+            motor_lower.setPower(0);
 
 
 

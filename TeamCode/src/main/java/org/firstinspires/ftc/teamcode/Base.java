@@ -31,6 +31,7 @@ public class Base extends LinearOpMode{
     private int LB;
     private int RF;
     private int RB;
+    private Tool global_tool;
 
     private final double[] Data_turn = {0.19, 0.563, 0.94,0,0.37,0.75};
 
@@ -42,6 +43,8 @@ public class Base extends LinearOpMode{
         motor_lb=lb1;
         motor_rf=rf1;
         motor_rb=rb1;
+
+        global_tool = new Tool();
 
 
 
@@ -133,8 +136,6 @@ public class Base extends LinearOpMode{
         }
 
 
-
-
     }
 
     public int GetPos(int id){
@@ -152,5 +153,46 @@ public class Base extends LinearOpMode{
         }
         return -1;
     }
+
+    public void MoveToLinear(double TargetPower,int x,int y,int angle){
+        LF= motor_lf.getCurrentPosition();
+        LB=motor_lb.getCurrentPosition();
+        RF=motor_rf.getCurrentPosition();
+        RB=motor_rb.getCurrentPosition();
+
+        motor_lf.setPower(0.1);
+        motor_lb.setPower(0.1);
+        motor_rf.setPower(0.1);
+        motor_rb.setPower(0.1);
+
+
+        motor_lf.setTargetPosition(LF+(y + (x + angle)));
+        motor_lb.setTargetPosition(LB+(y - (x - angle)));
+        motor_rf.setTargetPosition(RF+(y - (x + angle)));
+        motor_rb.setTargetPosition(RB+(y + (x - angle)));
+
+
+        double power = 0;
+
+        while (motor_lf.isBusy()|| motor_lb.isBusy()){
+            double percent= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
+
+            double[] line1 = global_tool.Calculate_Line(0,0.1,0.2,TargetPower);
+            double[] line2 = global_tool.Calculate_Line(0.8,TargetPower,1,0.1);
+
+            power=TargetPower;
+            if(percent<0.2) power = percent*line1[0]+line1[1];
+            else if(percent>0.8) power = percent*line2[0]+line2[1];
+
+            motor_lf.setPower(power);
+            motor_lb.setPower(power);
+            motor_rf.setPower(power);
+            motor_rb.setPower(power);
+
+        }
+
+    }
+
+
 
 }

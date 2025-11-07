@@ -58,5 +58,16 @@ public class Tool {
         }
     }
 
+    public double[] Calculate_Line(double x1,double y1,double x2,double y2){
+        double[] temp = new double[2];
+
+        double a = (y2-y1)/(x2-x1);
+        double b = y1 - a * x1;
+
+        temp[0] = a;
+        temp[1] = b;
+        return temp;
+    }
+
 
 }

@@ -23,6 +23,8 @@ public class AUTO_R extends LinearOpMode {
     private DcMotor lb;
     private DcMotor rf;
     private DcMotor rb;
+    private DcMotor motor_upper;
+    private DcMotor motor_lower;
     private Servo lift;
     private Servo turn;
 
@@ -46,7 +48,10 @@ public class AUTO_R extends LinearOpMode {
         turn = hardwareMap.get(Servo.class, "servo_turn");
         lift = hardwareMap.get(Servo.class, "servo_lift");
 
-        base=new Base(lf,lb,rf,rb,lift,turn);
+        motor_upper = hardwareMap.get(DcMotor.class, "motor_upper");
+        motor_lower = hardwareMap.get(DcMotor.class, "motor_lower");
+
+        base=new Base(lf,lb,rf,rb,lift,turn,1);
         int LF;
         int LB;
         int RB;
@@ -76,11 +81,22 @@ public class AUTO_R extends LinearOpMode {
         if (opModeIsActive()) {
 
             base.MoveTo(0.5,0,2100,0);
-            sleep(2500);
             base.MoveTo(0.2,0,0,300);
-            sleep(1000);
+
+            for(int i=0;i<3;i++){
+                base.TURN(3+i, true);
+                motor_upper.setPower(1);
+                motor_lower.setPower(1);
+                sleep(500);
+                //base.LIFT();
+                motor_upper.setPower(0);
+                motor_lower.setPower(0);
+            }
+
+
+
             base.MoveTo(0.5,0,0,360);
-            sleep(800);
+            //sleep(800);
             loop1:while(0==0) {
                 if (!rateLimit.hasExpired()) {
                     continue;

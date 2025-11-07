@@ -37,27 +37,43 @@ public class Base extends LinearOpMode{
     public void runOpMode() {}
 
 
-    public Base(DcMotor lf1,DcMotor lb1,DcMotor rf1,DcMotor rb1,Servo lift1,Servo turn1){
+    public Base(DcMotor lf1,DcMotor lb1,DcMotor rf1,DcMotor rb1,Servo lift1,Servo turn1,int id){
         motor_lf=lf1;
         motor_lb=lb1;
         motor_rf=rf1;
         motor_rb=rb1;
 
-        LF= motor_lf.getCurrentPosition();
-        LB=motor_lb.getCurrentPosition();
-        RF=motor_rf.getCurrentPosition();
-        RB=motor_rb.getCurrentPosition();
-
-        motor_lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor_lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor_rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor_rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-        motor_lf.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor_lb.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor_rf.setDirection(DcMotorSimple.Direction.FORWARD);
-        motor_rb.setDirection(DcMotorSimple.Direction.FORWARD);
+        if(id==0){
+            motor_lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor_lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor_rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor_rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        else{
+            LF= motor_lf.getCurrentPosition();
+            LB=motor_lb.getCurrentPosition();
+            RF=motor_rf.getCurrentPosition();
+            RB=motor_rb.getCurrentPosition();
+            motor_lf.setTargetPosition(LF);
+            motor_lb.setTargetPosition(LB);
+            motor_rf.setTargetPosition(RF);
+            motor_rb.setTargetPosition(RB);
+            motor_lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor_lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor_rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor_rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor_lf.setDirection(DcMotorSimple.Direction.REVERSE);
+            motor_lb.setDirection(DcMotorSimple.Direction.REVERSE);
+            motor_rf.setDirection(DcMotorSimple.Direction.FORWARD);
+            motor_rb.setDirection(DcMotorSimple.Direction.FORWARD);
+        }
+
+
+
+
+
 
         lift=lift1;
         lift.setPosition(0);
@@ -82,9 +98,9 @@ public class Base extends LinearOpMode{
 
     public void LIFT() {
         lift.setPosition(0.3);
-        sleep(1000);
+        sleep(300);
         lift.setPosition(0);
-        sleep(1000);
+        sleep(300);
     }
 
     public void Move(double power,double x,double y,double angle){
@@ -112,11 +128,9 @@ public class Base extends LinearOpMode{
         motor_rf.setTargetPosition(RF+(y - (x + angle)));
         motor_rb.setTargetPosition(RB+(y + (x - angle)));
 
-//        if(wait){
-//            while (motor_lf.isBusy()|| motor_lb.isBusy()||motor_rf.isBusy()||motor_rb.isBusy()){
-//                sleep(10);
-//            }
-//        }
+        while (motor_lf.isBusy()|| motor_lb.isBusy()){
+            sleep(10);
+        }
 
 
 

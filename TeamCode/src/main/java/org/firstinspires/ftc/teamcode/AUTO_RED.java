@@ -37,7 +37,7 @@ public class AUTO_RED extends LinearOpMode {
         turn = hardwareMap.get(Servo.class, "servo_turn");
         lift = hardwareMap.get(Servo.class, "servo_lift");
 
-        base=new Base(lf,lb,rf,rb,lift,turn);
+        base=new Base(lf,lb,rf,rb,lift,turn,1);
 
 //
 //        int LF;

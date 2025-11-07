@@ -18,11 +18,11 @@ public class Tool {
 
     }
 
-    public void addTriggerToChange(String tiggerName,Boolean initialVal){
-        Object[] temp = new Object[2];
-
-        temp[0] = initialVal;
-
+    public void addTriggerToChange(String tiggerName,int initialVal){
+        Object[] temp = new Object[3];
+        temp[0] = true;
+        temp[1] = initialVal;
+        temp[2] = "switchTrigger";
         triggers.put(tiggerName,temp);
     }
 
@@ -41,13 +41,20 @@ public class Tool {
 
     public void update(String name,boolean val,Runnable function1,Runnable function2){
         Object[] temp = triggers.get(name);
+        assert temp != null;
         if((boolean)temp[0] && val){
             temp[0]=false;
-            function1.run();
+            temp[1]=((int)temp[1]+1)%2;
+            if((int)temp[1]==1){
+                function1.run();
+            }
+            else if((int)temp[1]==0){
+                function2.run();
+            }
+
         }
         if(!(boolean)temp[0] && !val){
             temp[0]=true;
-            function2.run();
         }
     }
 

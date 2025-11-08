@@ -21,6 +21,7 @@ public class Base extends LinearOpMode{
 
     private int LF;
     private int LB;
+
     private int RF;
     private int RB;
     private Tool global_tool;

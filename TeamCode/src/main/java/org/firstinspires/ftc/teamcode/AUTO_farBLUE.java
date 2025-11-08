@@ -116,6 +116,7 @@ public class AUTO_farBLUE extends LinearOpMode {
         motor_lower.setPower(0.96);
         AtomicBoolean flag = new AtomicBoolean(false);
 
+
         new Thread(()->{
             base.TURN(List_order[0]+3,false);
             flag.set(true);

@@ -96,6 +96,7 @@ public class AUTO_gateBLUE extends LinearOpMode {
         base.TURN(3,false);
 
 
+
         //查看二维码
         base.MoveToLinear(0.55,1150,-1150,0);
         int id = -1;

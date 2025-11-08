@@ -69,24 +69,30 @@ public class Tool {
         return temp;
     }
 
-    public void Goal_update(int id,int[] List_goal) {
-        List_goal = new int[]{0, 0, 0};
+    public int[] Goal_update(int id) {
+        int[] List_goal = new int[]{0, 0, 0};
         List_goal[id - 21] = 1;
+        return  List_goal;
     }
 
-    public void Current_update(int firstGreenX,int[] List_current) {
-        List_current = new int[]{-1, -1, -1};
-        if (firstGreenX > 25 && firstGreenX < 120) { //左
+    public int[] Current_update(int firstGreenX) {
+        int[] List_current = new int[]{0, 0, 0};
+        if (firstGreenX <= 150) { //左
             List_current[0] = 1;
-        } else if (firstGreenX > 150 && firstGreenX < 190) { //中
+        } else if (firstGreenX > 150 && firstGreenX <= 200) { //中
             List_current[1] = 1;
-        } else if (firstGreenX > 200 && firstGreenX < 300) {
+        } else if (firstGreenX > 200) {
             List_current[2] = 1;
         }
+        else {
+            List_current = new int[]{-1,-1,-1};
+        }
+        return List_current;
     }
 
-    public void Calculate_order(int[] List_goal,int[] List_current,int[] List_order) {
+    public int[] Calculate_order(int[] List_goal,int[] List_current) {
         try {
+            int[] List_order = new int[]{0,1,2};
             //初始化池
             ArrayList<Integer> pool = new ArrayList<>();
             for (int i = 0; i < List_current.length; i++) {
@@ -109,10 +115,11 @@ public class Tool {
             for (int i = 0; i < List_order.length; i++) {
                 List_order[i] = (List_order[i] + 2) % 3;
             }
+            return List_order;
 
 
         } catch (ArithmeticException e) {  //小球数量有问题 比如吸进了俩绿色
-
+            return new int[]{0,1,2};
         }
     }
 

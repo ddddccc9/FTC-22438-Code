@@ -96,53 +96,44 @@ public class AUTO_gateRED extends LinearOpMode {
         base.TURN(3,false);
 
         //查看二维码
-        base.MoveToLinear(0.3,-600,0,0);
-
-
-        telemetry.addData("Tag",cam.AprilTag());
-
-
+        base.MoveToLinear(0.4,-1150,-1150,0);
         int id = -1;
-        while (id!=-1){
+        while (id==-1){
             id = cam.AprilTag();
         }
-        global_tool.Goal_update(id,List_goal);
-
+        List_goal = global_tool.Goal_update(id);
         for (HuskyLens.Block block : cam.getBlocks()) {
             if (block.id == 1) {
-                global_tool.Current_update(block.x,List_current);
+                List_current = global_tool.Current_update(block.x);
                 break;
             }
         }
+        List_order = global_tool.Calculate_order(List_goal,List_current);
 
-        global_tool.Calculate_order(List_goal,List_current,List_order);
-
-
-        base.MoveToLinear(0.3,-594,0,0);
-        base.MoveToLinear(0.3,0,0,660);
-
+        //发射
+        motor_upper.setPower(0.96);
+        motor_lower.setPower(0.96);
+        base.MoveToLinear(0.3,0,0,330);
         for (int j : List_order) {
             base.TURN(3+j,true);
             base.LIFT();
         }
+        base.MoveToLinear(0.3,0,0,335);
+        base.MoveToLinear(0.3,0,0,0);
+        motor_upper.setPower(0);
+        motor_lower.setPower(0);
+
+        //吸入
+        motor_intake.setPower(1);
+        base.TURN(0,false);
+        base.MoveToLinear(0.3,0,700,0);
+        for(int i=1;i<3;i++){
+            base.TURN(i,true);
+            base.MoveToLinear(0.3,0,150,0);
+        }
 
 
 
-//        //发射
-//        base.MoveToLinear(0.2,-594,0,0);
-//        base.MoveToLinear(0.2,0,0,660);
-//
-//
-//        motor_upper.setPower(1);
-//        motor_lower.setPower(1);
-//        sleep(500);
-//        for(int i=0;i<3;i++){
-//            base.TURN(3+i, true);
-//            base.LIFT();
-//
-//        }
-//        motor_upper.setPower(0);
-//        motor_lower.setPower(0);
     }
 }
 

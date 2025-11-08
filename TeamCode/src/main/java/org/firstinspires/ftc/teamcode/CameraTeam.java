@@ -11,6 +11,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class CameraTeam {
     OpenCvCamera camera;
@@ -46,12 +47,20 @@ public class CameraTeam {
         });
 
         huskyLens.initialize();
+
+
+        rateLimit = new Deadline(1, TimeUnit.MILLISECONDS);
+        rateLimit.expire();
+
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
+
 
 
 
     }
     public int AprilTag(){
+
+
 
         ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
         if (!currentDetections.isEmpty()) {
@@ -67,7 +76,12 @@ public class CameraTeam {
     }
 
     public HuskyLens.Block[] getBlocks(){
-        return huskyLens.blocks();
+        if(rateLimit.hasExpired()){
+            rateLimit.reset();
+            return huskyLens.blocks();
+        }
+        return null;
+
     }
 
 }

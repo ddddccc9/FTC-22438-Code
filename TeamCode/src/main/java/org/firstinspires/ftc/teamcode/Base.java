@@ -3,22 +3,13 @@ package org.firstinspires.ftc.teamcode;
 
 import static java.lang.Thread.sleep;
 
-import com.qualcomm.hardware.dfrobot.HuskyLens;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import java.util.concurrent.TimeUnit;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Base extends LinearOpMode{
     private DcMotor motor_lf;
     private DcMotor motor_lb;
@@ -175,7 +166,14 @@ public class Base extends LinearOpMode{
 
         double power = 0.1;
 
-        while (motor_lf.isBusy()|| motor_lb.isBusy()){
+        AtomicBoolean Flag = new AtomicBoolean(true);
+
+        new Thread(()->{
+            sleep(3000);
+            Flag.set(false);
+        }).start();
+
+        while (motor_lf.isBusy()|| motor_lb.isBusy() && Flag.get()){
             double percent= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
 
             double[] line1 = global_tool.Calculate_Line(0,0.1,0.4,TargetPower);

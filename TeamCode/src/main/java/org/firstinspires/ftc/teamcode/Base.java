@@ -71,8 +71,8 @@ public class Base extends LinearOpMode{
         lift.setPosition(0);
         turn=turn1;
 
-        TURN(0,false);
-        current_id=0;
+        TURN(3,false);
+        current_id=3;
     }
 
 
@@ -164,20 +164,21 @@ public class Base extends LinearOpMode{
         motor_rb.setTargetPosition(RB+(y + (x - angle)));
 
 
-        double power = 0.1;
+        double power = 0.01;
 
         AtomicBoolean Flag = new AtomicBoolean(true);
 
         new Thread(()->{
-            sleep(3000);
+            sleep(4000);
             Flag.set(false);
         }).start();
 
         while (motor_lf.isBusy()|| motor_lb.isBusy() && Flag.get()){
             double percent= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
-
-            double[] line1 = global_tool.Calculate_Line(0,0.1,0.4,TargetPower);
-            double[] line2 = global_tool.Calculate_Line(0.6,TargetPower,1,0.2);
+            double initVal = 0.095;
+            if(x==0 && y==0) initVal = 0.2;
+            double[] line1 = global_tool.Calculate_Line(0,initVal,0.3,TargetPower);
+            double[] line2 = global_tool.Calculate_Line(0.8,TargetPower,1,0.2);
 
             power=TargetPower;
             if(percent<0.2) power = percent*line1[0]+line1[1];

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.concurrent.TimeUnit;
-
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 @Autonomous(name = "AUTO_gateRED",group="Autonomous")
@@ -95,6 +95,7 @@ public class AUTO_gateRED extends LinearOpMode {
     private void Update(){
         base.TURN(3,false);
 
+
         //查看二维码
         base.MoveToLinear(0.4,-1150,-1150,0);
         int id = -1;
@@ -113,24 +114,81 @@ public class AUTO_gateRED extends LinearOpMode {
         //发射
         motor_upper.setPower(0.96);
         motor_lower.setPower(0.96);
-        base.MoveToLinear(0.3,0,0,330);
-        for (int j : List_order) {
-            base.TURN(3+j,true);
+        AtomicBoolean flag = new AtomicBoolean(false);
+
+        new Thread(()->{
+            base.TURN(List_order[0]+3,false);
+            flag.set(true);
+        }).start();
+
+        base.MoveToLinear(0.4,0,0,330);
+
+        while(!flag.get()){
+            telemetry.update();
+        }
+        base.LIFT();
+
+        for(int i=1;i<3;i++){
+            base.TURN(List_order[i]+3,true);
             base.LIFT();
         }
-        base.MoveToLinear(0.3,0,0,335);
-        base.MoveToLinear(0.3,0,0,0);
+
+
+        base.MoveToLinear(0.35,0,0,332);
         motor_upper.setPower(0);
         motor_lower.setPower(0);
 
         //吸入
         motor_intake.setPower(1);
         base.TURN(0,false);
+        sleep(200);
         base.MoveToLinear(0.3,0,700,0);
-        for(int i=1;i<3;i++){
-            base.TURN(i,true);
-            base.MoveToLinear(0.3,0,150,0);
+
+        base.TURN(1,false);
+        sleep(500);
+        base.MoveTo(0.3,0,100,0);
+
+        base.TURN(2,false);
+        sleep(800);
+        base.MoveTo(0.3,0,250,0);
+
+
+        //发射2
+        motor_intake.setPower(0);
+        //顺序计算2
+        AtomicBoolean flag2 = new AtomicBoolean(false);
+        new Thread(()->{
+            for (HuskyLens.Block block : cam.getBlocks()) {
+                if (block.id == 1) {
+                    List_current = global_tool.Current_update(block.x);
+                    break;
+                }
+            }
+            List_order = global_tool.Calculate_order(List_goal,List_current);
+            base.TURN(List_order[0]+3,false);
+            flag2.set(true);
+        }).start();
+
+        base.MoveToLinear(0.3,0,-1050,0);
+        base.MoveToLinear(0.35,0,0,-332);
+
+        while (!flag2.get()){
+            telemetry.update();
         }
+
+        motor_upper.setPower(0.96);
+        motor_lower.setPower(0.96);
+
+        base.LIFT();
+
+        for(int i=1;i<3;i++){
+            base.TURN(List_order[i]+3,true);
+            base.LIFT();
+        }
+
+
+
+
 
 
 

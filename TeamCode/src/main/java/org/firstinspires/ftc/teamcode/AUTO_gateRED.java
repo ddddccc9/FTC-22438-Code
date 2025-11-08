@@ -6,15 +6,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.concurrent.TimeUnit;
 
 
 
-@Autonomous(name = "AUTO_R",group="Autonomous")
+@Autonomous(name = "AUTO_gateRED",group="Autonomous")
 
-public class AUTO_R extends LinearOpMode {
+public class AUTO_gateRED extends LinearOpMode {
 
     private final int READ_PERIOD = 1;
 
@@ -30,10 +31,39 @@ public class AUTO_R extends LinearOpMode {
     private Servo turn;
 
     private Base base;
+    private CameraTeam cam;
 
 
     @Override
     public void runOpMode() {
+        Init();
+        waitForStart();
+
+        if (opModeIsActive()) {
+            Update();
+
+//
+//            //面向球 吸球
+//            base.MoveToLinear(0.2,0,0,360);
+//            motor_intake.setPower(1);
+//
+//            base.MoveToLinear(0.3,0,800,0);
+//            for(int i=0;i<3;i++){
+//                base.TURN(i, true);
+//            }
+//
+//
+//
+//            motor_intake.setPower(0);
+//
+//            sleep(800);
+
+
+
+            telemetry.update();
+        }
+    }
+    private void Init(){
         huskyLens1 = hardwareMap.get(HuskyLens.class, "huskylens1");
 
 
@@ -58,19 +88,7 @@ public class AUTO_R extends LinearOpMode {
         motor_intake = hardwareMap.get(DcMotor.class, "motor_intake");
 
         base=new Base(lf,lb,rf,rb,lift,turn,1);
-        int LF;
-        int LB;
-        int RB;
-        int RF;
-        int R1;
-        int R2;
-
-
-
-
-
         rateLimit.expire();
-
 
         if (!huskyLens1.knock()) {
             telemetry.addData(">>", "Problem communicating with " + huskyLens1.getDeviceName());
@@ -78,50 +96,43 @@ public class AUTO_R extends LinearOpMode {
             telemetry.addData(">>", "Press start to continue");
         }
 
+        int CamId  =hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         huskyLens1.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
+        cam = new CameraTeam(CamId,webcamName,huskyLens1);
 
         telemetry.update();
-        waitForStart();
 
-        if (opModeIsActive()) {
-            base.TURN(3,false);
+    }
+    private void Update(){
+        base.TURN(3,false);
 
-            base.MoveToLinear(0.65,0,2100,0);
+        //查看二维码
+        base.MoveToLinear(0.5,-936,0,0);
 
-            base.MoveToLinear(0.2,0,0,300);
-
-            motor_upper.setPower(1);
-            motor_lower.setPower(1);
-            sleep(500);
-            for(int i=0;i<3;i++){
-                base.TURN(3+i, true);
-                base.LIFT();
-
-            }
-            motor_upper.setPower(0);
-            motor_lower.setPower(0);
-
-
-            //面向球 吸球
-            base.MoveToLinear(0.2,0,0,360);
-            motor_intake.setPower(1);
-
-            base.MoveToLinear(0.3,0,800,0);
-            for(int i=0;i<3;i++){
-                base.TURN(i, true);
-            }
-
-
-
-            motor_intake.setPower(0);
-
-            sleep(800);
-
-
-
+        while (true){
+            telemetry.addData("Tag",cam.AprilTag());
             telemetry.update();
+
         }
+
+
+//        //发射
+//        base.MoveToLinear(0.2,-594,0,0);
+//        base.MoveToLinear(0.2,0,0,660);
+//
+//
+//        motor_upper.setPower(1);
+//        motor_lower.setPower(1);
+//        sleep(500);
+//        for(int i=0;i<3;i++){
+//            base.TURN(3+i, true);
+//            base.LIFT();
+//
+//        }
+//        motor_upper.setPower(0);
+//        motor_lower.setPower(0);
     }
 }
 

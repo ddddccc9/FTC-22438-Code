@@ -26,6 +26,7 @@ public class Base extends LinearOpMode{
     private DcMotor motor_rb;
     private Servo lift;
     private Servo turn;
+    private int current_id;
 
     private int LF;
     private int LB;
@@ -33,7 +34,8 @@ public class Base extends LinearOpMode{
     private int RB;
     private Tool global_tool;
 
-    private final double[] Data_turn = {0.19, 0.563, 0.94,0,0.37,0.75};
+    private final double[] Data_turn = {0.19    , 0.563 ,0.94   ,0  ,0.37   ,0.75};
+    private final int[] Time_wait    = {1000    ,1000   ,1000   ,1000,1000  ,1000};
 
     public void runOpMode() {}
 
@@ -74,20 +76,19 @@ public class Base extends LinearOpMode{
         }
 
 
-
-
-
-
         lift=lift1;
         lift.setPosition(0);
         turn=turn1;
+
+        TURN(0,false);
+        current_id=0;
     }
 
 
     public void TURN(int id,boolean T) {
         turn.setPosition(Data_turn[id]);
         if(T) {
-            sleep(1000);
+            sleep(Time_wait[id]);
         }
     }
 
@@ -172,13 +173,13 @@ public class Base extends LinearOpMode{
         motor_rb.setTargetPosition(RB+(y + (x - angle)));
 
 
-        double power = 0;
+        double power = 0.1;
 
         while (motor_lf.isBusy()|| motor_lb.isBusy()){
             double percent= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
 
-            double[] line1 = global_tool.Calculate_Line(0,0.1,0.2,TargetPower);
-            double[] line2 = global_tool.Calculate_Line(0.8,TargetPower,1,0.1);
+            double[] line1 = global_tool.Calculate_Line(0,0.1,0.4,TargetPower);
+            double[] line2 = global_tool.Calculate_Line(0.6,TargetPower,1,0.2);
 
             power=TargetPower;
             if(percent<0.2) power = percent*line1[0]+line1[1];

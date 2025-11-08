@@ -69,5 +69,62 @@ public class Tool {
         return temp;
     }
 
+    public void Goal_update(int id,int[] List_goal) {
+        List_goal = new int[]{0, 0, 0};
+        List_goal[id - 21] = 1;
+    }
+
+    public void Current_update(int firstGreenX,int[] List_current) {
+        List_current = new int[]{-1, -1, -1};
+        if (firstGreenX > 25 && firstGreenX < 120) { //左
+            List_current[0] = 1;
+        } else if (firstGreenX > 150 && firstGreenX < 190) { //中
+            List_current[1] = 1;
+        } else if (firstGreenX > 200 && firstGreenX < 300) {
+            List_current[2] = 1;
+        }
+    }
+
+    public void Calculate_order(int[] List_goal,int[] List_current,int[] List_order) {
+        try {
+            //初始化池
+            ArrayList<Integer> pool = new ArrayList<>();
+            for (int i = 0; i < List_current.length; i++) {
+                pool.add(i);
+            }
+
+            //计算顺序
+            for (int i = 0; i < List_goal.length; i++) {
+                int index = 0;
+                while (List_goal[i] != List_current[pool.get(index)] && index<pool.size()-1) index++;
+                List_order[i] = pool.get(index);
+                pool.remove(index);
+            }
+
+            ///因为顺序与转盘顺序不一致
+            /// 左-2 中-0 右-1
+            /// 前面是列表顺序，后面是对应的转盘旋转ID
+
+            //转换顺序到转盘顺序
+            for (int i = 0; i < List_order.length; i++) {
+                List_order[i] = (List_order[i] + 2) % 3;
+            }
+
+
+        } catch (ArithmeticException e) {  //小球数量有问题 比如吸进了俩绿色
+
+        }
+    }
+
+    //输出数组
+    public String show_list(int[] a){
+        String ans="",temp="";
+        for (int e:a){
+            temp = ans + e +" ";
+            ans = temp;
+        }
+        return ans;
+    }
+
 
 }

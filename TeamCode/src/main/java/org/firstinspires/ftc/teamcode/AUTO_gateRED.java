@@ -124,7 +124,7 @@ public class AUTO_gateRED extends LinearOpMode {
         new Thread(()->{
             base.MoveToLinear(0.4,0,0,330);
         }).start();
-        sleep(1000);
+        sleep(2000);
 
         while(!flag.get()){
             telemetry.update();

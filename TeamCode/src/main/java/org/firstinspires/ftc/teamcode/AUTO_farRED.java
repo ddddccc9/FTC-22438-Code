@@ -97,7 +97,7 @@ public class AUTO_farRED extends LinearOpMode {
 
 
         //查看二维码
-        base.MoveToLinear(0.55,0,3200,0);
+        base.MoveToLinear(0.4,0,2150,0);
         int id = -1;
         while (id==-1){
             id = cam.AprilTag();
@@ -124,7 +124,7 @@ public class AUTO_farRED extends LinearOpMode {
         new Thread(()->{
             base.MoveToLinear(0.4,0,0,330);
         }).start();
-        sleep(1000);
+        sleep(2000);
 
         while(!flag.get()){
             telemetry.update();
@@ -139,7 +139,7 @@ public class AUTO_farRED extends LinearOpMode {
         new Thread(()->{
             base.MoveToLinear(0.3,0,0,332);
         }).start();
-        sleep(1000);
+        sleep(2000);
         motor_upper.setPower(0);
         motor_lower.setPower(0);
 
@@ -147,19 +147,19 @@ public class AUTO_farRED extends LinearOpMode {
         motor_intake.setPower(1);
         base.TURN(0,false);
         new Thread(()->{
-            base.MoveToLinear(0.25,0,700,0);
+            base.MoveToLinear(0.2,0,700,0);
         }).start();
 
-        sleep(750);
+        sleep(3000);
 
         base.TURN(1,false);
-        sleep(450);
+        sleep(2000);
         new Thread(()->{
-            base.MoveTo(0.25,0,70,0);
+            base.MoveTo(0.25,0,120,0);
         }).start();
-        sleep(1000);
+        sleep(2000);
         base.TURN(2,false);
-        sleep(550);
+        sleep(1050);
         new Thread(()->{
             base.MoveTo(0.25,0,350,0);
         }).start();
@@ -186,19 +186,19 @@ public class AUTO_farRED extends LinearOpMode {
         new Thread(()->{
             base.MoveToLinear(0.45,0,-1120,0);
         }).start();
-        sleep(1500);
+        sleep(2000);
 
         new Thread(()->{
             base.MoveToLinear(0.4,0,0,-325);
         }).start();
-        sleep(1050);
+        sleep(2050);
 
         while (!flag2.get()){
             telemetry.update();
         }
 
-        motor_upper.setPower(1);
-        motor_lower.setPower(1);
+        motor_upper.setPower(0.98);
+        motor_lower.setPower(0.98);
         sleep(1000);
         base.LIFT();
 

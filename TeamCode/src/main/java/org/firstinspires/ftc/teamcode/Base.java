@@ -179,8 +179,8 @@ public class Base extends LinearOpMode{
 
         while ((motor_lf.isBusy()|| motor_lb.isBusy()) && Flag.get()){
             double percent= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
-            double initVal = 0.095;
-            if(x==0 && y==0) initVal = 0.2;
+            double initVal = 0.075;
+            if(x==0 && y==0) initVal = 0.1;
             double[] line1 = global_tool.Calculate_Line(0,initVal,0.3,TargetPower);
             double[] line2 = global_tool.Calculate_Line(0.8,TargetPower,1,0.2);
 

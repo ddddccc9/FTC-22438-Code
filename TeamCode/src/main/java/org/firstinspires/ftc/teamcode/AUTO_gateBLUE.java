@@ -67,6 +67,7 @@ public class AUTO_gateBLUE extends LinearOpMode {
         lift = hardwareMap.get(Servo.class, "servo_lift");
 
         motor_upper = hardwareMap.get(DcMotor.class, "motor_upper");
+
         motor_lower = hardwareMap.get(DcMotor.class, "motor_lower");
         motor_upper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor_lower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

@@ -177,7 +177,7 @@ public class Base extends LinearOpMode{
 
 
 
-        while (motor_lf.isBusy()|| motor_lb.isBusy() && Flag.get()){
+        while ((motor_lf.isBusy()|| motor_lb.isBusy()) && Flag.get()){
             double percent= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
             double initVal = 0.095;
             if(x==0 && y==0) initVal = 0.2;

@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-@Autonomous(name = "AUTO_gateRED",group="Autonomous")
+@Autonomous(name = "AUTO_farRED",group="Autonomous")
 
-public class AUTO_gateRED extends LinearOpMode {
+public class AUTO_farRED extends LinearOpMode {
 
     private final int READ_PERIOD = 1;
 
@@ -97,7 +97,7 @@ public class AUTO_gateRED extends LinearOpMode {
 
 
         //查看二维码
-        base.MoveToLinear(0.55,-1150,-1150,0);
+        base.MoveToLinear(0.55,0,3200,0);
         int id = -1;
         while (id==-1){
             id = cam.AprilTag();
@@ -139,7 +139,7 @@ public class AUTO_gateRED extends LinearOpMode {
         new Thread(()->{
             base.MoveToLinear(0.3,0,0,332);
         }).start();
-        sleep(2000);
+        sleep(1000);
         motor_upper.setPower(0);
         motor_lower.setPower(0);
 
@@ -150,16 +150,16 @@ public class AUTO_gateRED extends LinearOpMode {
             base.MoveToLinear(0.25,0,700,0);
         }).start();
 
-        sleep(2500);
+        sleep(750);
 
         base.TURN(1,false);
-        sleep(1500);
+        sleep(450);
         new Thread(()->{
-            base.MoveTo(0.25,0,120,0);
+            base.MoveTo(0.25,0,70,0);
         }).start();
-        sleep(2000);
+        sleep(1000);
         base.TURN(2,false);
-        sleep(1050);
+        sleep(550);
         new Thread(()->{
             base.MoveTo(0.25,0,350,0);
         }).start();
@@ -186,19 +186,19 @@ public class AUTO_gateRED extends LinearOpMode {
         new Thread(()->{
             base.MoveToLinear(0.45,0,-1120,0);
         }).start();
-        sleep(2000);
+        sleep(1500);
 
         new Thread(()->{
             base.MoveToLinear(0.4,0,0,-325);
         }).start();
-        sleep(2050);
+        sleep(1050);
 
         while (!flag2.get()){
             telemetry.update();
         }
 
-        motor_upper.setPower(0.98);
-        motor_lower.setPower(0.98);
+        motor_upper.setPower(1);
+        motor_lower.setPower(1);
         sleep(1000);
         base.LIFT();
 

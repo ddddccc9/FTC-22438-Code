@@ -33,6 +33,12 @@ public class AUTO_gateRED extends LinearOpMode {
     private Base base;
     private CameraTeam cam;
 
+    private int[] List_goal = {0, 0, 1};      //0是紫球 1是绿球  三个数分别是左中右
+    private int[] List_current = {-1, -1, -1};  //0是紫球 1是绿球 -1是没球
+
+    private int[] List_order = {0, 1, 2};    //数字是index，用于存储顺序
+    private Tool global_tool = new Tool();
+
 
     @Override
     public void runOpMode() {
@@ -41,25 +47,6 @@ public class AUTO_gateRED extends LinearOpMode {
 
         if (opModeIsActive()) {
             Update();
-
-//
-//            //面向球 吸球
-//            base.MoveToLinear(0.2,0,0,360);
-//            motor_intake.setPower(1);
-//
-//            base.MoveToLinear(0.3,0,800,0);
-//            for(int i=0;i<3;i++){
-//                base.TURN(i, true);
-//            }
-//
-//
-//
-//            motor_intake.setPower(0);
-//
-//            sleep(800);
-
-
-
             telemetry.update();
         }
     }
@@ -109,13 +96,36 @@ public class AUTO_gateRED extends LinearOpMode {
         base.TURN(3,false);
 
         //查看二维码
-        base.MoveToLinear(0.5,-936,0,0);
+        base.MoveToLinear(0.3,-600,0,0);
 
-        while (true){
-            telemetry.addData("Tag",cam.AprilTag());
-            telemetry.update();
 
+        telemetry.addData("Tag",cam.AprilTag());
+
+
+        int id = -1;
+        while (id!=-1){
+            id = cam.AprilTag();
         }
+        global_tool.Goal_update(id,List_goal);
+
+        for (HuskyLens.Block block : cam.getBlocks()) {
+            if (block.id == 1) {
+                global_tool.Current_update(block.x,List_current);
+                break;
+            }
+        }
+
+        global_tool.Calculate_order(List_goal,List_current,List_order);
+
+
+        base.MoveToLinear(0.3,-594,0,0);
+        base.MoveToLinear(0.3,0,0,660);
+
+        for (int j : List_order) {
+            base.TURN(3+j,true);
+            base.LIFT();
+        }
+
 
 
 //        //发射

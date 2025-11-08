@@ -147,6 +147,7 @@ public class Base extends LinearOpMode{
     }
 
     public void MoveToLinear(double TargetPower,int x,int y,int angle){
+        boolean End=false;
         LF= motor_lf.getCurrentPosition();
         LB=motor_lb.getCurrentPosition();
         RF=motor_rf.getCurrentPosition();
@@ -168,10 +169,13 @@ public class Base extends LinearOpMode{
 
         AtomicBoolean Flag = new AtomicBoolean(true);
 
+
         new Thread(()->{
             sleep(4000);
             Flag.set(false);
         }).start();
+
+
 
         while (motor_lf.isBusy()|| motor_lb.isBusy() && Flag.get()){
             double percent= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));

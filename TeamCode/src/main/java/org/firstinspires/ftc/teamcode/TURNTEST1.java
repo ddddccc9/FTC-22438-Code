@@ -153,6 +153,7 @@ public class TURNTEST1 extends LinearOpMode {
 
         if (hasStartedHuskyLens && !hasLockedGreen) {
             if (rateLimit.hasExpired()) {
+
                 rateLimit.reset();
                 HuskyLens.Block[] blocks = huskyLens.blocks();
 

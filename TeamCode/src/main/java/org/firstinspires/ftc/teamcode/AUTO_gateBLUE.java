@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-@Autonomous(name = "AUTO_gateRED",group="Autonomous")
+@Autonomous(name = "AUTO_gateBLUE",group="Autonomous")
 
-public class AUTO_gateRED extends LinearOpMode {
+public class AUTO_gateBLUE extends LinearOpMode {
 
     private final int READ_PERIOD = 1;
 

@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-@Autonomous(name = "AUTO_gateBLUE",group="Autonomous")
+@Autonomous(name = "AUTO_farBLUE",group="Autonomous")
 
-public class AUTO_gateBLUE extends LinearOpMode {
+public class AUTO_farBLUE extends LinearOpMode {
 
     private final int READ_PERIOD = 1;
 
@@ -96,9 +96,8 @@ public class AUTO_gateBLUE extends LinearOpMode {
         base.TURN(3,false);
 
 
-
         //查看二维码
-        base.MoveToLinear(0.55,1150,-1150,0);
+        base.MoveToLinear(0.4,0,2150,0);
         int id = -1;
         while (id==-1){
             id = cam.AprilTag();
@@ -116,6 +115,7 @@ public class AUTO_gateBLUE extends LinearOpMode {
         motor_upper.setPower(0.96);
         motor_lower.setPower(0.96);
         AtomicBoolean flag = new AtomicBoolean(false);
+
 
         new Thread(()->{
             base.TURN(List_order[0]+3,false);
@@ -148,13 +148,13 @@ public class AUTO_gateBLUE extends LinearOpMode {
         motor_intake.setPower(1);
         base.TURN(0,false);
         new Thread(()->{
-            base.MoveToLinear(0.25,0,700,0);
+            base.MoveToLinear(0.2,0,700,0);
         }).start();
 
-        sleep(2500);
+        sleep(3000);
 
         base.TURN(1,false);
-        sleep(1500);
+        sleep(2000);
         new Thread(()->{
             base.MoveTo(0.25,0,120,0);
         }).start();

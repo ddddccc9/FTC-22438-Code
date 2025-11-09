@@ -24,7 +24,7 @@ public class Base extends LinearOpMode{
 
     private int RF;
     private int RB;
-    private Tool global_tool;
+    private final Tool global_tool;
 
     private final double[] Data_turn = {0.19    , 0.563 ,0.94   ,0  ,0.37   ,0.75};
     private final int[] Time_wait    = {1000    ,1000   ,1000   ,1000,1000  ,1000};

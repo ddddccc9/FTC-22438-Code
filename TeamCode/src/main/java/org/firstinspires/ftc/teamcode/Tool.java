@@ -79,9 +79,9 @@ public class Tool {
         int[] List_current = new int[]{0, 0, 0};
         if (firstGreenX <= 150) { //左
             List_current[0] = 1;
-        } else if (firstGreenX > 150 && firstGreenX <= 200) { //中
+        } else if (firstGreenX <= 200) { //中
             List_current[1] = 1;
-        } else if (firstGreenX > 200) {
+        } else if (firstGreenX > 200) { //右
             List_current[2] = 1;
         }
         else {

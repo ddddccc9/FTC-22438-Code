@@ -31,6 +31,11 @@ public class Base extends LinearOpMode{
     public void runOpMode() {}
 
 
+    /**
+     * 基本功能的类，方便手动/自动程序编写
+     *
+     * @param id 0代表手动 1代表自动程序
+     */
     public Base(DcMotor lf1,DcMotor lb1,DcMotor rf1,DcMotor rb1,Servo lift1,Servo turn1,int id){
         motor_lf=lf1;
         motor_lb=lb1;
@@ -170,31 +175,40 @@ public class Base extends LinearOpMode{
         AtomicBoolean Flag = new AtomicBoolean(true);
 
 
+        //最大移动时间
         new Thread(()->{
             sleep(4000);
             Flag.set(false);
         }).start();
 
+        boolean Busy = motor_lf.isBusy()|| motor_lb.isBusy() || motor_rf.isBusy()|| motor_rb.isBusy();
 
-
-        while ((motor_lf.isBusy()|| motor_lb.isBusy()) && Flag.get()){
-            double percent= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
+        while (Busy && Flag.get()){
+            double percent_lf= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
+            double percent_lb= (double) (motor_lb.getCurrentPosition() - LB) /(y - (x - angle));
+            double percent_rf= (double) (motor_rf.getCurrentPosition() - RF) /(y - (x + angle));
+            double percent_rb= (double) (motor_rb.getCurrentPosition() - RB) /(y + (x - angle));
             double initVal = 0.075;
             if(x==0 && y==0) initVal = 0.1;
             double[] line1 = global_tool.Calculate_Line(0,initVal,0.3,TargetPower);
             double[] line2 = global_tool.Calculate_Line(0.8,TargetPower,1,0.2);
 
-            power=TargetPower;
-            if(percent<0.2) power = percent*line1[0]+line1[1];
-            else if(percent>0.8) power = percent*line2[0]+line2[1];
 
-            motor_lf.setPower(power);
-            motor_lb.setPower(power);
-            motor_rf.setPower(power);
-            motor_rb.setPower(power);
+
+            motor_lf.setPower(cal_power(line1,line2,percent_lf,TargetPower));
+            motor_lb.setPower(cal_power(line1,line2,percent_lb,TargetPower));
+            motor_rf.setPower(cal_power(line1,line2,percent_rf,TargetPower));
+            motor_rb.setPower(cal_power(line1,line2,percent_rb,TargetPower));
 
         }
 
+    }
+
+    private double cal_power(double[] line1,double[] line2,double percent,double TargetPower){
+        double power=TargetPower;
+        if(percent<0.2) power = percent*line1[0]+line1[1];
+        else if(percent>0.8) power = percent*line2[0]+line2[1];
+        return power;
     }
 
 

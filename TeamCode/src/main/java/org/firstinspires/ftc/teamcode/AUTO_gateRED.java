@@ -4,6 +4,11 @@ import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -24,14 +29,15 @@ public class AUTO_gateRED extends LinearOpMode {
     private DcMotor lb;
     private DcMotor rf;
     private DcMotor rb;
-    private DcMotor motor_upper;
-    private DcMotor motor_lower;
+    private DcMotorEx motor_upper;
+    private DcMotorEx motor_lower;
     private DcMotor motor_intake;
     private Servo lift;
     private Servo turn;
 
     private Base base;
     private CameraTeam cam;
+    private PIDFCoefficients pid_fire;
 
     private int[] List_goal = {0, 0, 1};      //0是紫球 1是绿球  三个数分别是左中右
     private int[] List_current = {-1, -1, -1};  //0是紫球 1是绿球 -1是没球
@@ -66,11 +72,21 @@ public class AUTO_gateRED extends LinearOpMode {
         turn = hardwareMap.get(Servo.class, "servo_turn");
         lift = hardwareMap.get(Servo.class, "servo_lift");
 
-        motor_upper = hardwareMap.get(DcMotor.class, "motor_upper");
-        motor_lower = hardwareMap.get(DcMotor.class, "motor_lower");
+        motor_upper = hardwareMap.get(DcMotorEx.class, "motor_upper");
+        motor_lower = hardwareMap.get(DcMotorEx.class, "motor_lower");
         motor_upper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor_lower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor_lower.setDirection(DcMotor.Direction.REVERSE);
+
+//        //发射器控制PID代码
+//        pid_fire = new PIDFCoefficients(10,3,0,0); //PID得调参
+//        motor_upper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        motor_lower.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        motor_upper.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,pid_fire);
+//        motor_lower.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,pid_fire);
+//
+//        motor_upper.setVelocity();
+//        motor_lower.setVelocity();
 
         motor_intake = hardwareMap.get(DcMotor.class, "motor_intake");
 

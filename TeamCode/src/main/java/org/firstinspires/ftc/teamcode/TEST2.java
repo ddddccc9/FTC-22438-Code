@@ -3,16 +3,17 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "ChongQing",group="TELEOP")
-public class ChongQing extends LinearOpMode {
+@TeleOp(name = "TEST2",group="TELEOP")
+public class TEST2 extends LinearOpMode {
 
     public Tool global_tool = new Tool();
-    private DcMotor motor_upper;
-    private DcMotor motor_lower;
+    private DcMotorEx motor_upper;
+    private DcMotorEx motor_lower;
     private DcMotor motor_intake;
     private DcMotor motor_lf;
     private DcMotor motor_lb;
@@ -52,8 +53,8 @@ public class ChongQing extends LinearOpMode {
 
     //所有初始化
     private void Initiation(){
-        motor_upper = hardwareMap.get(DcMotor.class, "motor_upper");
-        motor_lower = hardwareMap.get(DcMotor.class, "motor_lower");
+        motor_upper = hardwareMap.get(DcMotorEx.class, "motor_upper");
+        motor_lower = hardwareMap.get(DcMotorEx.class, "motor_lower");
         motor_intake = hardwareMap.get(DcMotor.class, "motor_intake");
         motor_lf = hardwareMap.get(DcMotor.class, "motor_lf");
         motor_lb = hardwareMap.get(DcMotor.class, "motor_lb");
@@ -62,8 +63,8 @@ public class ChongQing extends LinearOpMode {
         lift = hardwareMap.get(Servo.class, "servo_lift");
         turn = hardwareMap.get(Servo.class, "servo_turn");
         //lf.setTargetPosition(0);
-        motor_upper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor_lower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor_upper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor_lower.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         motor_rf.setDirection(DcMotorSimple.Direction.REVERSE);
         motor_rb.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -161,13 +162,19 @@ public class ChongQing extends LinearOpMode {
         }
 
         if(gamepad2.right_bumper){
-            motor_upper.setPower(1);
-            motor_lower.setPower(1);
+            motor_upper.setVelocity(2243.8);
+            motor_lower.setVelocity(2243.8);
+        }
+        else if(gamepad2.right_trigger > 0.1){
+            motor_upper.setVelocity(3000);
+            motor_lower.setVelocity(3000);
         }
         else {
-            motor_upper.setPower(0);
-            motor_lower.setPower(0);
+            motor_upper.setVelocity(0);
+            motor_lower.setVelocity(0);
         }
+        telemetry.addData("upper",motor_upper.getVelocity());
+        telemetry.addData("lower",motor_lower.getVelocity());
 
 
         //转盘初始化

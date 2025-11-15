@@ -228,10 +228,10 @@ public class Base extends LinearOpMode{
 
 
 
-        motor_lf.setPower(0.75);
-        motor_lb.setPower(0.75);
-        motor_rf.setPower(0.75);
-        motor_rb.setPower(0.75);
+        motor_lf.setPower(0.075);
+        motor_lb.setPower(0.075);
+        motor_rf.setPower(0.075);
+        motor_rb.setPower(0.075);
         sleep(100);
         motor_lf.setPower(0.1);
         motor_lb.setPower(0.1);

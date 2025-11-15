@@ -160,7 +160,7 @@ public class AUTO_gateRED2 extends LinearOpMode {
         }
 
         new Thread(()->{
-            base.MoveToLinear(0.25,0,0,33);
+            base.MoveToLinear(0.25,0,0,330);
         }).start();
         sleep(3500);
         motor_upper.setPower(0);

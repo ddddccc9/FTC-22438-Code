@@ -11,11 +11,11 @@ public class motor_test extends LinearOpMode {
     private DcMotor rf;
     private DcMotor lb;
     private DcMotor rb;
+    private Base base;
 
     @Override
 
     public void runOpMode() {
-
 
         lf = hardwareMap.get(DcMotor.class, "lf");
         lb = hardwareMap.get(DcMotor.class, "lb");
@@ -34,12 +34,16 @@ public class motor_test extends LinearOpMode {
         rb.setDirection(DcMotor.Direction.FORWARD);
         rf.setDirection(DcMotor.Direction.FORWARD);
 
+        base=new Base(lf,lb,rf,rb,null,null,1);
+
+
 
         //LF = lf.getCurrentPosition();
 
 
         waitForStart();
         if (opModeIsActive()) {
+            base.MoveToLinear(0.2,0,700,0);
 
             while (opModeIsActive()) {
 

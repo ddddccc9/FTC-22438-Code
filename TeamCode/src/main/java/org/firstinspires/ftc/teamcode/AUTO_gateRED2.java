@@ -117,12 +117,14 @@ public class AUTO_gateRED2 extends LinearOpMode {
         base.MoveToLinear(0.55,-1150,-1150,0);
         id = -1;
         new Thread(()->{
-            sleep(2000);
-            if(id==-1) id=21;
+            while (id==-1){
+                id = cam.AprilTag();
+            }
+
         }).start();
-        while (id==-1){
-            id = cam.AprilTag();
-        }
+
+        sleep(2000);
+        if(id==-1) id=21;
         List_goal = global_tool.Goal_update(id);
         for (HuskyLens.Block block : cam.getBlocks()) {
             if (block.id == 1) {

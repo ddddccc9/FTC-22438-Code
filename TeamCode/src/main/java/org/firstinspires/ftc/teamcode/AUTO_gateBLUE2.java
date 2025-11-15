@@ -98,7 +98,7 @@ public class AUTO_gateBLUE2 extends LinearOpMode {
 
 
         //查看二维码
-        base.MoveToLinear(0.55,1150,-1150,0);
+        base.MoveToLinear(0.55,1200,-1200,0);
         int id = -1;
         while (id==-1){
             id = cam.AprilTag();
@@ -140,7 +140,7 @@ public class AUTO_gateBLUE2 extends LinearOpMode {
         new Thread(()->{
             base.MoveToLinear(0.3,0,0,-332);
         }).start();
-        sleep(2000);
+        sleep(2500);
         motor_upper.setPower(0);
         motor_lower.setPower(0);
 
@@ -148,10 +148,10 @@ public class AUTO_gateBLUE2 extends LinearOpMode {
         motor_intake.setPower(1);
         base.TURN(0,false);
         new Thread(()->{
-            base.MoveToLinear(0.25,0,700,0);
+            base.MoveToLinear(0.2,0,700,0);
         }).start();
 
-        sleep(2500);
+        sleep(3000);
 
         base.TURN(1,false);
         sleep(1500);

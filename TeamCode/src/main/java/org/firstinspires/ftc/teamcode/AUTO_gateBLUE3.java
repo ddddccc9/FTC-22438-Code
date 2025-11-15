@@ -1,14 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.dfrobot.HuskyLens;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -18,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-@Autonomous(name = "AUTO_gateRED2",group="Autonomous")
+@Autonomous(name = "AUTO_gateBLUE3",group="Autonomous")
 
-public class AUTO_gateRED2 extends LinearOpMode {
+public class AUTO_gateBLUE3 extends LinearOpMode {
 
     private final int READ_PERIOD = 1;
 
@@ -29,15 +24,14 @@ public class AUTO_gateRED2 extends LinearOpMode {
     private DcMotor lb;
     private DcMotor rf;
     private DcMotor rb;
-    private DcMotorEx motor_upper;
-    private DcMotorEx motor_lower;
+    private DcMotor motor_upper;
+    private DcMotor motor_lower;
     private DcMotor motor_intake;
     private Servo lift;
     private Servo turn;
 
     private Base base;
     private CameraTeam cam;
-    private PIDFCoefficients pid_fire;
 
     private int[] List_goal = {0, 0, 1};      //0是紫球 1是绿球  三个数分别是左中右
     private int[] List_current = {-1, -1, -1};  //0是紫球 1是绿球 -1是没球
@@ -72,21 +66,11 @@ public class AUTO_gateRED2 extends LinearOpMode {
         turn = hardwareMap.get(Servo.class, "servo_turn");
         lift = hardwareMap.get(Servo.class, "servo_lift");
 
-        motor_upper = hardwareMap.get(DcMotorEx.class, "motor_upper");
-        motor_lower = hardwareMap.get(DcMotorEx.class, "motor_lower");
+        motor_upper = hardwareMap.get(DcMotor.class, "motor_upper");
+        motor_lower = hardwareMap.get(DcMotor.class, "motor_lower");
         motor_upper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor_lower.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor_lower.setDirection(DcMotor.Direction.REVERSE);
-
-//        //发射器控制PID代码
-//        pid_fire = new PIDFCoefficients(10,3,0,0); //PID得调参
-//        motor_upper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motor_lower.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motor_upper.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,pid_fire);
-//        motor_lower.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,pid_fire);
-//
-//        motor_upper.setVelocity();
-//        motor_lower.setVelocity();
 
         motor_intake = hardwareMap.get(DcMotor.class, "motor_intake");
 
@@ -112,8 +96,9 @@ public class AUTO_gateRED2 extends LinearOpMode {
         base.TURN(3,false);
 
 
+
         //查看二维码
-        base.MoveToLinear(0.55,-1150,-1150,0);
+        base.MoveTo(0.55,1200,-1200,0);
         int id = -1;
         while (id==-1){
             id = cam.AprilTag();
@@ -138,7 +123,7 @@ public class AUTO_gateRED2 extends LinearOpMode {
         }).start();
 
         new Thread(()->{
-            base.MoveToLinear(0.4,0,0,330);
+            base.MoveTo(0.4,0,0,-330);
         }).start();
         sleep(2000);
 
@@ -153,9 +138,9 @@ public class AUTO_gateRED2 extends LinearOpMode {
         }
 
         new Thread(()->{
-            base.MoveToLinear(0.25,0,0,332);
+            base.MoveTo(0.3,0,0,-332);
         }).start();
-        sleep(3000);
+        sleep(2500);
         motor_upper.setPower(0);
         motor_lower.setPower(0);
 
@@ -163,7 +148,7 @@ public class AUTO_gateRED2 extends LinearOpMode {
         motor_intake.setPower(1);
         base.TURN(0,false);
         new Thread(()->{
-            base.MoveToLinear(0.25,0,700,0);
+            base.MoveTo(0.2,0,700,0);
         }).start();
 
         sleep(3000);
@@ -200,12 +185,12 @@ public class AUTO_gateRED2 extends LinearOpMode {
         }).start();
 
         new Thread(()->{
-            base.MoveToLinear(0.45,0,-1120,0);
+            base.MoveTo(0.45,0,-1120,0);
         }).start();
         sleep(2000);
 
         new Thread(()->{
-            base.MoveToLinear(0.4,0,0,-325);
+            base.MoveTo(0.4,0,0,325);
         }).start();
         sleep(2050);
 

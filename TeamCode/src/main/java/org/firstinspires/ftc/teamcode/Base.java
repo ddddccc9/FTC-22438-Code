@@ -186,17 +186,19 @@ public class Base extends LinearOpMode{
 
         while (Busy && Flag.get()){
             double percent_lf= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
-            double percent_lb= (double) (motor_lb.getCurrentPosition() - LB) /(y - (x - angle));
             double percent_rf= (double) (motor_rf.getCurrentPosition() - RF) /(y - (x + angle));
+            double percent_lb= (double) (motor_lb.getCurrentPosition() - LB) /(y - (x - angle));
             double percent_rb= (double) (motor_rb.getCurrentPosition() - RB) /(y + (x - angle));
+
+
             double initVal = 0.075;
             if(x==0 && y==0) initVal = 0.1;
             double[] line1 = global_tool.Calculate_Line(0,initVal,0.3,TargetPower);
             double[] line2 = global_tool.Calculate_Line(0.8,TargetPower,1,0.2);
             motor_lf.setPower(cal_power(line1,line2,percent_lf,TargetPower));
-            motor_lb.setPower(cal_power(line1,line2,percent_lb,TargetPower));
-            motor_rf.setPower(cal_power(line1,line2,percent_rf,TargetPower));
-            motor_rb.setPower(cal_power(line1,line2,percent_rb,TargetPower));
+            motor_lb.setPower(cal_power(line1,line2,percent_lf,TargetPower));
+            motor_rf.setPower(cal_power(line1,line2,percent_lf,TargetPower));
+            motor_rb.setPower(cal_power(line1,line2,percent_lb,TargetPower));
         }
 
     }

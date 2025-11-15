@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Motor_test",group="TELEOP")
 public class motor_test extends LinearOpMode {
@@ -12,15 +13,20 @@ public class motor_test extends LinearOpMode {
     private DcMotor lb;
     private DcMotor rb;
     private Base base;
+    private Servo lift;
+    private Servo turn;
 
     @Override
 
     public void runOpMode() {
 
-        lf = hardwareMap.get(DcMotor.class, "lf");
-        lb = hardwareMap.get(DcMotor.class, "lb");
-        rf = hardwareMap.get(DcMotor.class, "rf");
-        rb = hardwareMap.get(DcMotor.class, "rb");
+        lf = hardwareMap.get(DcMotor.class, "motor_lf");
+        lb = hardwareMap.get(DcMotor.class, "motor_lb");
+        rf = hardwareMap.get(DcMotor.class, "motor_rf");
+        rb = hardwareMap.get(DcMotor.class, "motor_rb");
+
+        turn = hardwareMap.get(Servo.class, "servo_turn");
+        lift = hardwareMap.get(Servo.class, "servo_lift");
 
         //lf.setTargetPosition(0);
         double LF;
@@ -34,11 +40,12 @@ public class motor_test extends LinearOpMode {
         rb.setDirection(DcMotor.Direction.FORWARD);
         rf.setDirection(DcMotor.Direction.FORWARD);
 
-        base=new Base(lf,lb,rf,rb,null,null,1);
+        base=new Base(lf,lb,rf,rb,lift,turn,1);
 
 
 
-        //LF = lf.getCurrentPosition();
+
+        //LF = lf.getCurrentPosition();】
 
 
         waitForStart();

@@ -246,6 +246,7 @@ public class Base extends LinearOpMode{
 
 
 
+
     }
 
     private double cal_power(double[] line1,double[] line2,double percent,double TargetPower){

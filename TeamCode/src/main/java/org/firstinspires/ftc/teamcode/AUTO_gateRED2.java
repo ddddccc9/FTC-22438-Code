@@ -44,6 +44,7 @@ public class AUTO_gateRED2 extends LinearOpMode {
 
     private int[] List_order = {0, 1, 2};    //数字是index，用于存储顺序
     private Tool global_tool = new Tool();
+    private int id = -1;
 
 
     @Override
@@ -114,7 +115,11 @@ public class AUTO_gateRED2 extends LinearOpMode {
 
         //查看二维码
         base.MoveToLinear(0.55,-1150,-1150,0);
-        int id = -1;
+        id = -1;
+        new Thread(()->{
+            sleep(2000);
+            if(id==-1) id=21;
+        }).start();
         while (id==-1){
             id = cam.AprilTag();
         }

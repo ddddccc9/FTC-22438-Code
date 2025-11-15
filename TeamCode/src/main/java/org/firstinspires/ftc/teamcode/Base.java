@@ -227,20 +227,13 @@ public class Base extends LinearOpMode{
         motor_rb.setTargetPosition(RB+(y + (x - angle)));
 
 
-
-        motor_lf.setPower(0.075);
-        motor_lb.setPower(0.075);
-        motor_rf.setPower(0.075);
-        motor_rb.setPower(0.075);
-        sleep(100);
-        motor_lf.setPower(0.1);
-        motor_lb.setPower(0.1);
-        motor_rf.setPower(0.1);
-        motor_rb.setPower(0.1);
-        sleep(100);
-
-
-
+        for (int i=0;i<10;i++) {
+            motor_lf.setPower(i*0.01);
+            motor_lb.setPower(i*0.01);
+            motor_rf.setPower(i*0.01);
+            motor_rb.setPower(i*0.01);
+            sleep(100);
+        }
 
         motor_lf.setPower(TargetPower);
         motor_lb.setPower(TargetPower);

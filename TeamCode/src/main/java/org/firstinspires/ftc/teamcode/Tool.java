@@ -71,6 +71,7 @@ public class Tool {
 
     public int[] Goal_update(int id) {
         int[] List_goal = new int[]{0, 0, 0};
+        if(id==-1) id=21;
         List_goal[id - 21] = 1;
         return  List_goal;
     }

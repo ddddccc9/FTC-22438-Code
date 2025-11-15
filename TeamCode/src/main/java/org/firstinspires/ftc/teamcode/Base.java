@@ -210,6 +210,50 @@ public class Base extends LinearOpMode{
 
 
     }
+    public void MoveToSlowStar(double TargetPower,int x,int y,int angle,int time){
+        LF= motor_lf.getCurrentPosition();
+        LB=motor_lb.getCurrentPosition();
+        RF=motor_rf.getCurrentPosition();
+        RB=motor_rb.getCurrentPosition();
+
+        motor_lf.setPower(0);
+        motor_lb.setPower(0);
+        motor_rf.setPower(0);
+        motor_rb.setPower(0);
+
+        motor_lf.setTargetPosition(LF+(y + (x + angle)));
+        motor_lb.setTargetPosition(LB+(y - (x - angle)));
+        motor_rf.setTargetPosition(RF+(y - (x + angle)));
+        motor_rb.setTargetPosition(RB+(y + (x - angle)));
+
+
+
+        motor_lf.setPower(0.75);
+        motor_lb.setPower(0.75);
+        motor_rf.setPower(0.75);
+        motor_rb.setPower(0.75);
+        sleep(100);
+        motor_lf.setPower(0.1);
+        motor_lb.setPower(0.1);
+        motor_rf.setPower(0.1);
+        motor_rb.setPower(0.1);
+        sleep(100);
+
+
+
+
+        motor_lf.setPower(TargetPower);
+        motor_lb.setPower(TargetPower);
+        motor_rf.setPower(TargetPower);
+        motor_rb.setPower(TargetPower);
+
+        sleep(time);
+
+
+
+
+
+    }
 
     private double cal_power(double[] line1,double[] line2,double percent,double TargetPower){
         double power=TargetPower;

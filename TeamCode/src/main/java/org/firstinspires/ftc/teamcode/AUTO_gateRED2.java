@@ -160,33 +160,26 @@ public class AUTO_gateRED2 extends LinearOpMode {
         }
 
         new Thread(()->{
-            base.MoveToLinear(0.25,0,0,332);
+            base.MoveToLinear(0.25,0,0,33);
         }).start();
-        sleep(3000);
+        sleep(3500);
         motor_upper.setPower(0);
         motor_lower.setPower(0);
 
         //吸入
         motor_intake.setPower(1);
         base.TURN(0,false);
-        new Thread(()->{
-            base.MoveToLinear(0.25,0,700,0);
-        }).start();
+        base.MoveToSlowStar(0.1,0,700,0,2500);
 
-        sleep(3000);
 
         base.TURN(1,false);
         sleep(1500);
-        new Thread(()->{
-            base.MoveTo(0.25,0,120,0);
-        }).start();
-        sleep(2000);
+        base.MoveToSlowStar(0.1,0,120,0,2000);
+
         base.TURN(2,false);
         sleep(1050);
-        new Thread(()->{
-            base.MoveTo(0.25,0,350,0);
-        }).start();
-        sleep(1700);
+
+        base.MoveToSlowStar(0.1,0,350,0,1700);
 
 
         //发射2
@@ -205,6 +198,7 @@ public class AUTO_gateRED2 extends LinearOpMode {
             base.TURN(List_order[0]+3,false);
             flag2.set(true);
         }).start();
+
 
         new Thread(()->{
             base.MoveToLinear(0.45,0,-1120,0);

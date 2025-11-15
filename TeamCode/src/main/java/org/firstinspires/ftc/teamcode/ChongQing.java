@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -59,6 +60,12 @@ public class ChongQing extends LinearOpMode {
         motor_lb = hardwareMap.get(DcMotor.class, "motor_lb");
         motor_rf = hardwareMap.get(DcMotor.class, "motor_rf");
         motor_rb = hardwareMap.get(DcMotor.class, "motor_rb");
+
+//        motor_lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motor_lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motor_rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motor_rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         lift = hardwareMap.get(Servo.class, "servo_lift");
         turn = hardwareMap.get(Servo.class, "servo_turn");
         //lf.setTargetPosition(0);
@@ -75,6 +82,8 @@ public class ChongQing extends LinearOpMode {
         motor_rb.setDirection(DcMotorSimple.Direction.REVERSE);
         motor_lf.setDirection(DcMotorSimple.Direction.FORWARD);
         motor_lb.setDirection(DcMotorSimple.Direction.FORWARD);
+
+
 
         power=1;
 

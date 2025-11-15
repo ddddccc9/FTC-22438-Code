@@ -98,7 +98,7 @@ public class AUTO_gateBLUE2 extends LinearOpMode {
 
 
         //查看二维码
-        base.MoveToLinear(0.55,1200,-1200,0);
+        base.MoveToLinear(0.55,1150,-1150,0);
         int id = -1;
         while (id==-1){
             id = cam.AprilTag();

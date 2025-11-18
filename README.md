@@ -4,11 +4,33 @@
 
 ## 环境配置
 
-### 1. Git 和 GitHub 配置
-- 安装 Git 并完成基础配置
-- 绑定您的 GitHub 账号（建议使用 SSH 密钥）
+### 1. Android studio配置
+**第一步**
+-根据图示位置，点击 **Clone Repository** 
+![image](publicSources/step1.png)
 
-### 2. SSH 连接问题解决
+**第二步**
+- 1、 选择Repository URL
+- 2、 URL输入框 填入https://github.com/ddddccc9/FTC-22438-Code
+- 3、 Directory输入框 填入想要储存的位置
+- 4、 点击Clone
+![image](publicSources/step2.png)
+
+### 2. 如何进行更新、提交
+**Update Program更新**
+- 1、 点击(`main`)
+- 2、 点击Update Project
+![img.png](publicSources/update.png)
+
+**Commit & Push更新**
+- 1、 点击(`main`)
+- 2、 点击Commit
+- 3、 勾选需要保存的更改
+- 4、 点击Commit and Push即可上传你的更改到云端
+  ![img.png](publicSources/commit&push.png)
+
+
+### 3. SSH 连接问题解决
 
 如果遇到 SSH 连接错误：
 bash
@@ -34,18 +56,12 @@ ssh: connect to host github.com port 22: Connection refused
 
 ## 开发规范
 
-- 及时拉取最新代码（`git pull`）
+- 及时拉取最新代码（`Update Project`）
 - 提交前测试功能完整性
 - 编写清晰的提交信息
 - 遇到问题先查阅 GitHub Issues
+- **每一个代码文件前都要标清楚该文件的功能及描述 具体样式可参考当前已有文件**
 
-## 快速开始
-
-git clone [仓库地址]
-
-Android studio配置好版本控制（git）
-
-开始开发...
 
 
 ## 获取帮助

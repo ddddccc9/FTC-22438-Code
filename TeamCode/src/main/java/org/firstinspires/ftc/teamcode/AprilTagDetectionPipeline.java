@@ -1,3 +1,8 @@
+/**
+ * 二维码识别功能 封装
+ *
+ * 打包二维码识别功能的代码
+ */
 package org.firstinspires.ftc.teamcode;
 
 import org.opencv.calib3d.Calib3d;

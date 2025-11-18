@@ -1,3 +1,7 @@
+/**
+ * 底盘测试 判断底盘电机是否连线正确
+ */
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

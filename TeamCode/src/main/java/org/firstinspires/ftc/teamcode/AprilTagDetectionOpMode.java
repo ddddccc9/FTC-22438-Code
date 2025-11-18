@@ -1,3 +1,9 @@
+/**
+ *二维码识别
+ *
+ * 二维码识别程序，摄像头识别二维码的ID并输出
+ */
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

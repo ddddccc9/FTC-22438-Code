@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode;
-
-/*
-该文件制作于学术月
+/**
+ * 该文件制作于学术月
  */
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

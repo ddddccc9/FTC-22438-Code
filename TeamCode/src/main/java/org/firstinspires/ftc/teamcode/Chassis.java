@@ -1,25 +1,10 @@
-package org.firstinspires.ftc.teamcode;
-
-/*
-该文件制作于学术月，是利用PID算法的底盘，结合外置编码器实现底盘移动
+/**
+ 该文件制作于学术月，是利用PID算法的底盘，结合外置编码器实现底盘移动
  */
 
-import com.qualcomm.hardware.dfrobot.HuskyLens;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.CRServo;
+package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import java.util.concurrent.TimeUnit;
+
 
 public class Chassis {
     private DcMotor lf;

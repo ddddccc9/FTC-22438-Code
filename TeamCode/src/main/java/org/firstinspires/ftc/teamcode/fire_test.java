@@ -1,3 +1,6 @@
+/**
+ * 发射功能测试，测试能否正常发射小球
+ */
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

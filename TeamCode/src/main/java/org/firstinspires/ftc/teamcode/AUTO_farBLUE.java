@@ -1,3 +1,7 @@
+/**
+ * FTC比赛 远端，蓝色方小车 自动阶段代码
+ */
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.dfrobot.HuskyLens;

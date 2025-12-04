@@ -118,6 +118,7 @@ public class AUTO_gateRED extends LinearOpMode {
         while (id==-1){
             id = cam.AprilTag();
         }
+        telemetry.addData("TagID",id);
         List_goal = global_tool.Goal_update(id);
         for (HuskyLens.Block block : cam.getBlocks()) {
             if (block.id == 1) {
@@ -138,7 +139,8 @@ public class AUTO_gateRED extends LinearOpMode {
         }).start();
 
         new Thread(()->{
-            base.MoveToLinear(0.4,0,0,330);
+            //base.MoveToLinear(0.4,0,0,330);
+            base.MoveTo(0.3,0,0,330);
         }).start();
         sleep(2000);
 
@@ -155,31 +157,61 @@ public class AUTO_gateRED extends LinearOpMode {
         new Thread(()->{
             base.MoveToLinear(0.3,0,0,332);
         }).start();
-        sleep(2000);
+        sleep(1900);
         motor_upper.setPower(0);
         motor_lower.setPower(0);
 
         //吸入
+//        telemetry.addData("now","begin");
+//        telemetry.update();
+//        motor_intake.setPower(1);
+//        base.TURN(0,false);
+//        new Thread(()->{
+//            base.MoveToLinear(0.25,0,700,0);
+//        }).start();
+//        telemetry.addData("now","1 end");
+//        sleep(2500);
+//
+//        base.TURN(1,false);
+//        sleep(1500);
+//        new Thread(()->{
+//            base.MoveTo(0.25,0,120,0);
+//        }).start();
+//        sleep(2000);
+//        telemetry.addData("now","2 end");
+//        base.TURN(2,false);
+//        sleep(1050);
+//        new Thread(()->{
+//            base.MoveTo(0.25,0,350,0);
+//        }).start();
+//        sleep(1700);
+//        telemetry.addData("now","end");
+//        telemetry.update();
+
+        telemetry.addData("now","begin");
+        telemetry.update();
         motor_intake.setPower(1);
-        base.TURN(0,false);
         new Thread(()->{
-            base.MoveToLinear(0.25,0,700,0);
+            base.MoveToLinear(0.4,0,1170,0);//700+120+350
         }).start();
+//        telemetry.addData("now","1 end");
+        sleep(3000);//原为3200
 
-        sleep(2500);
-
-        base.TURN(1,false);
-        sleep(1500);
-        new Thread(()->{
-            base.MoveTo(0.25,0,120,0);
-        }).start();
-        sleep(2000);
-        base.TURN(2,false);
-        sleep(1050);
-        new Thread(()->{
-            base.MoveTo(0.25,0,350,0);
-        }).start();
-        sleep(1700);
+//        base.TURN(1,false);
+//        sleep(1500);
+//        new Thread(()->{
+//            base.MoveTo(0.25,0,120,0);
+//        }).start();
+//        sleep(2000);
+//        telemetry.addData("now","2 end");
+//        base.TURN(2,false);
+//        sleep(1050);
+//        new Thread(()->{
+//            base.MoveTo(0.25,0,350,0);
+//        }).start();
+//        sleep(1700);
+        telemetry.addData("now","end");
+        telemetry.update();
 
 
         //发射2
@@ -200,12 +232,12 @@ public class AUTO_gateRED extends LinearOpMode {
         }).start();
 
         new Thread(()->{
-            base.MoveToLinear(0.45,0,-1120,0);
+            base.MoveToLinear(0.45,0,-1300,0);
         }).start();
-        sleep(2000);
+        sleep(3500);
 
         new Thread(()->{
-            base.MoveToLinear(0.4,0,0,-325);
+            base.MoveToLinear(0.4,0,0,-335);
         }).start();
         sleep(2050);
 
@@ -213,8 +245,8 @@ public class AUTO_gateRED extends LinearOpMode {
             telemetry.update();
         }
 
-        motor_upper.setPower(0.98);
-        motor_lower.setPower(0.98);
+        motor_upper.setPower(0.97);
+        motor_lower.setPower(0.97);
         sleep(1000);
         base.LIFT();
 
@@ -234,4 +266,3 @@ public class AUTO_gateRED extends LinearOpMode {
 
     }
 }
-

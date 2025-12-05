@@ -169,17 +169,17 @@ public class AUTO_gateRED2 extends LinearOpMode {
         //吸入
         motor_intake.setPower(1);
         base.TURN(0,false);
-        base.MoveToSlowStart(0.1,0,700,0,2500);
+        base.MoveToSlowStart(0.1,0,700,0);
 
 
         base.TURN(1,false);
         sleep(1500);
-        base.MoveToSlowStart(0.1,0,120,0,2000);
+        base.MoveToSlowStart(0.1,0,120,0);
 
         base.TURN(2,false);
         sleep(1050);
 
-        base.MoveToSlowStart(0.1,0,350,0,1700);
+        base.MoveToSlowStart(0.1,0,350,0);
 
 
         //发射2

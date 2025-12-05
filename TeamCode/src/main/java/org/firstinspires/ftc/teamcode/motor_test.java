@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.tools.Base;
+
 @TeleOp(name = "Motor_test",group="TELEOP")
 public class motor_test extends LinearOpMode {
 

@@ -2,8 +2,7 @@
  * 全局工具 封包
  * 用于程序的调用，可多赛季使用，减少重复开发
  */
-package org.firstinspires.ftc.teamcode;
-import com.qualcomm.robotcore.hardware.Gamepad;
+package org.firstinspires.ftc.teamcode.tools;
 
 import java.util.*;
 

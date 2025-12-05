@@ -6,10 +6,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.teamcode.tools.Base;
+import org.firstinspires.ftc.teamcode.tools.CameraTeam;
+import org.firstinspires.ftc.teamcode.tools.HotParam;
 import org.firstinspires.ftc.teamcode.tools.Tool;
 
 @TeleOp(name = "ChongQing",group="TELEOP")
@@ -91,9 +94,8 @@ public class ChongQing extends LinearOpMode {
 
         power=1;
 
-        global_tool.addTriggerToChange("Y",0);
-
-        global_tool.addTriggerToChange("B",0);
+        global_tool.addTriggerToChange("L1",0);
+        global_tool.addTriggerToChange("R1",0);
     }
 
     private void Update(){
@@ -102,15 +104,15 @@ public class ChongQing extends LinearOpMode {
         double x = gamepad1.left_stick_x;
         double angle = gamepad1.right_stick_x*0.9;
 
-        global_tool.update("Y",gamepad1.y,()->{
+        global_tool.update("L1",gamepad1.left_bumper,()->{
             intake_val = 1;
             motor_intake.setPower(1);
         },()->{
             intake_val = 0;
-
+            motor_intake.setPower(0);
         });
 
-        global_tool.update("B",gamepad1.b,()->{
+        global_tool.update("R1",gamepad1.right_bumper,()->{
             intake_val = intake_val*-1;
         });
 
@@ -124,40 +126,43 @@ public class ChongQing extends LinearOpMode {
 //                    state_2=true;
 //                }
 
-        if(gamepad1.left_trigger>0.5){
-            power = 0.3;
-        }
-        else {
-            power=0.8;
-        }
-
         base.Move(power,x,y,angle);
 
-        if(gamepad1.a){
-            motor_intake.setDirection(DcMotor.Direction.REVERSE);
-        }
-        else {
-            motor_intake.setDirection(DcMotor.Direction.FORWARD);
-        }
 
-        if(gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left){ //确认方向键按下
-            if(gamepad1.dpad_left){
-                current_id=0;
-            }
-            else if(gamepad1.dpad_right){
-                current_id=1;
-            } else if (gamepad1.dpad_down) {
-                current_id=2;
-            }
+        //吸球转盘初始化
+        if(current_id==-1){
+            current_id=1;
+            base.TURN(current_id,false);
+        }
+        //吸球改变转盘方向
+        if(gamepad1.dpad_right){
+            current_id=0;
+            base.TURN(current_id,false);
+        }
+        if(gamepad1.dpad_down){
+            current_id=1;
+            base.TURN(current_id,false);
+        }
+        if(gamepad1.dpad_left){
+            current_id=2;
+            base.TURN(current_id,false);
+        }
+        //发球改变转盘方向
+        if(gamepad1.x){
+            current_id=3;
+            base.TURN(current_id,false);
+        }
+        if(gamepad1.a){
+            current_id=4;
+            base.TURN(current_id,false);
+        }
+        if(gamepad1.b){
+            current_id=5;
             base.TURN(current_id,false);
         }
 
-
-
-        //玩家2
-
-        //A键发射
-        if(gamepad2.a && state_fire){
+        //R2发射（投球托）
+        if(gamepad1.right_trigger>0.5 && state_fire){
             state_fire=false;
             new Thread(() -> {
                 //防舵机抬升打到转盘
@@ -173,7 +178,8 @@ public class ChongQing extends LinearOpMode {
             }).start();
         }
 
-        if(gamepad2.right_bumper){
+        //L2投球电机启动
+        if(gamepad1.left_trigger>0.5){
             motor_upper.setPower(1);
             motor_lower.setPower(1);
         }
@@ -181,30 +187,6 @@ public class ChongQing extends LinearOpMode {
             motor_upper.setPower(0);
             motor_lower.setPower(0);
         }
-
-
-        //转盘初始化
-        if(current_id==-1){
-            current_id=1;
-            base.TURN(current_id,false);
-        }
-
-
-        if(gamepad2.dpad_down || gamepad2.dpad_right || gamepad2.dpad_left){ //确认方向键按下
-            if(gamepad2.dpad_right){
-                current_id=3;
-            }
-            else if(gamepad2.dpad_down){
-                current_id=4;
-            } else if (gamepad2.dpad_left) {
-                current_id=5;
-            }
-            base.TURN(current_id,false);
-        }
-
-
-
-
 
 
         telemetry.addData("id", current_id);

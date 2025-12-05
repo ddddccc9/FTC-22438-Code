@@ -213,7 +213,7 @@ public class Base extends LinearOpMode{
 
 
     }
-    public void MoveToSlowStar(double TargetPower,int x,int y,int angle,int time){
+    public void MoveToSlowStart(double TargetPower,int x,int y,int angle,int time){
         LF= motor_lf.getCurrentPosition();
         LB=motor_lb.getCurrentPosition();
         RF=motor_rf.getCurrentPosition();
@@ -230,11 +230,11 @@ public class Base extends LinearOpMode{
         motor_rb.setTargetPosition(RB+(y + (x - angle)));
 
 
-        for (int i=0;i<10;i++) {
-            motor_lf.setPower(i*0.01);
-            motor_lb.setPower(i*0.01);
-            motor_rf.setPower(i*0.01);
-            motor_rb.setPower(i*0.01);
+        for (double i=0;i<TargetPower;i+=0.02) {
+            motor_lf.setPower(TargetPower);
+            motor_lb.setPower(TargetPower);
+            motor_rf.setPower(TargetPower);
+            motor_rb.setPower(TargetPower);
             sleep(100);
         }
 
@@ -243,7 +243,34 @@ public class Base extends LinearOpMode{
         motor_rf.setPower(TargetPower);
         motor_rb.setPower(TargetPower);
 
-        sleep(time);
+        if(time>0){
+            sleep(time);
+        }
+        else{
+            double p = TargetPower;
+            while ((motor_lf.isBusy()|| motor_lb.isBusy())){
+                double percent=0.01;
+                if(motor_lf.getTargetPosition() != 0){
+                    percent= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
+                }
+                else{
+                    percent= (double) (motor_rf.getCurrentPosition() - RF) /(y - (x + angle));
+                }
+
+                if(percent>0.5){
+                    p-=0.01;
+                    if(p<0.1) p=0.1;
+                    motor_lf.setPower(p);
+                    motor_lb.setPower(p);
+                    motor_rf.setPower(p);
+                    motor_rb.setPower(p);
+                }
+
+            }
+        }
+
+
+
 
 
 

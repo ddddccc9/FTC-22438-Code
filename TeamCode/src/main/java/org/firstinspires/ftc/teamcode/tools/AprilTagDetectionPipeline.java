@@ -1,6 +1,5 @@
 /**
  * 二维码识别功能 封装
- *
  * 打包二维码识别功能的代码
  */
 package org.firstinspires.ftc.teamcode.tools;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 
 public class AprilTagDetectionPipeline extends OpenCvPipeline {
     private long nativeApriltagPtr;
-    private Mat grey = new Mat();
+    private final Mat grey = new Mat();
     private ArrayList<AprilTagDetection> detections = new ArrayList<>();
 
     private ArrayList<AprilTagDetection> detectionsUpdate = new ArrayList<>();

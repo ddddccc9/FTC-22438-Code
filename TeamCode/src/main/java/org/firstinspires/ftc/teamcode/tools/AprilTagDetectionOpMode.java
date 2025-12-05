@@ -6,6 +6,8 @@
 
 package org.firstinspires.ftc.teamcode.tools;
 
+import android.annotation.SuppressLint;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -29,6 +31,7 @@ public class AprilTagDetectionOpMode extends LinearOpMode {
 
     double tagsize = 0.166;
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
@@ -61,7 +64,7 @@ public class AprilTagDetectionOpMode extends LinearOpMode {
         while (opModeIsActive()) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
-            if (currentDetections.size() != 0) {
+            if (!currentDetections.isEmpty()) {
                 boolean tagFound = false;
 
                 for (AprilTagDetection tag : currentDetections) {

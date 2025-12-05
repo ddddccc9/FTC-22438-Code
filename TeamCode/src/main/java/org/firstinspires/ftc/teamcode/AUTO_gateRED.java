@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import java.io.IOException;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import org.firstinspires.ftc.teamcode.tools.Base;
 import org.firstinspires.ftc.teamcode.tools.CameraTeam;
+import org.firstinspires.ftc.teamcode.tools.HotParam;
 import org.firstinspires.ftc.teamcode.tools.Tool;
 
 import java.util.concurrent.TimeUnit;
@@ -47,14 +49,21 @@ public class AUTO_gateRED extends LinearOpMode {
 
 
     @Override
-    public void runOpMode() {
+    public void runOpMode(){
         Init();
-        waitForStart();
 
+        waitForStart();
         if (opModeIsActive()) {
-            Update();
-            telemetry.update();
+
+                Update();
+                telemetry.update();
+
+
         }
+
+
+
+
     }
     private void Init(){
         huskyLens1 = hardwareMap.get(HuskyLens.class, "huskylens1");
@@ -74,19 +83,10 @@ public class AUTO_gateRED extends LinearOpMode {
 
         motor_upper = hardwareMap.get(DcMotorEx.class, "motor_upper");
         motor_lower = hardwareMap.get(DcMotorEx.class, "motor_lower");
-        motor_upper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor_lower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor_upper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor_lower.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor_lower.setDirection(DcMotor.Direction.REVERSE);
 
-//        //发射器控制PID代码
-//        pid_fire = new PIDFCoefficients(10,3,0,0); //PID得调参
-//        motor_upper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motor_lower.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motor_upper.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,pid_fire);
-//        motor_lower.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,pid_fire);
-//
-//        motor_upper.setVelocity();
-//        motor_lower.setVelocity();
 
         motor_intake = hardwareMap.get(DcMotor.class, "motor_intake");
 
@@ -113,7 +113,7 @@ public class AUTO_gateRED extends LinearOpMode {
 
 
         //查看二维码
-        base.MoveToLinear(0.55,-1150,-1150,0);
+        base.MoveToSlowStart(0.55,-1150,-1150,0,0);
         int id = -1;
         while (id==-1){
             id = cam.AprilTag();
@@ -129,8 +129,8 @@ public class AUTO_gateRED extends LinearOpMode {
         List_order = global_tool.Calculate_order(List_goal,List_current);
 
         //发射
-        motor_upper.setPower(0.96);
-        motor_lower.setPower(0.96);
+        motor_upper.setPower(0.97);
+        motor_lower.setPower(0.97);
         AtomicBoolean flag = new AtomicBoolean(false);
 
         new Thread(()->{
@@ -142,7 +142,7 @@ public class AUTO_gateRED extends LinearOpMode {
             //base.MoveToLinear(0.4,0,0,330);
             base.MoveTo(0.3,0,0,330);
         }).start();
-        sleep(2000);
+        sleep(3000);
 
         while(!flag.get()){
             telemetry.update();
@@ -154,68 +154,27 @@ public class AUTO_gateRED extends LinearOpMode {
             base.LIFT();
         }
 
-        new Thread(()->{
-            base.MoveToLinear(0.3,0,0,332);
-        }).start();
-        sleep(1900);
+
+        base.MoveToSlowStart(0.3,0,0,332,0);
+
         motor_upper.setPower(0);
         motor_lower.setPower(0);
 
-        //吸入
-//        telemetry.addData("now","begin");
-//        telemetry.update();
-//        motor_intake.setPower(1);
-//        base.TURN(0,false);
-//        new Thread(()->{
-//            base.MoveToLinear(0.25,0,700,0);
-//        }).start();
-//        telemetry.addData("now","1 end");
-//        sleep(2500);
-//
-//        base.TURN(1,false);
-//        sleep(1500);
-//        new Thread(()->{
-//            base.MoveTo(0.25,0,120,0);
-//        }).start();
-//        sleep(2000);
-//        telemetry.addData("now","2 end");
-//        base.TURN(2,false);
-//        sleep(1050);
-//        new Thread(()->{
-//            base.MoveTo(0.25,0,350,0);
-//        }).start();
-//        sleep(1700);
-//        telemetry.addData("now","end");
-//        telemetry.update();
 
         telemetry.addData("now","begin");
         telemetry.update();
         motor_intake.setPower(1);
-        new Thread(()->{
-            base.MoveToLinear(0.4,0,1170,0);//700+120+350
-        }).start();
-//        telemetry.addData("now","1 end");
-        sleep(3000);//原为3200
 
-//        base.TURN(1,false);
-//        sleep(1500);
-//        new Thread(()->{
-//            base.MoveTo(0.25,0,120,0);
-//        }).start();
-//        sleep(2000);
-//        telemetry.addData("now","2 end");
-//        base.TURN(2,false);
-//        sleep(1050);
-//        new Thread(()->{
-//            base.MoveTo(0.25,0,350,0);
-//        }).start();
-//        sleep(1700);
+        base.MoveToSlowStart(0.4,0,1170,0,0);//700+120+350
+//        telemetry.addData("now","1 end");
+
         telemetry.addData("now","end");
         telemetry.update();
 
 
         //发射2
         motor_intake.setPower(0);
+        base.TURN(3,true);
 
         //顺序计算2
         AtomicBoolean flag2 = new AtomicBoolean(false);
@@ -231,15 +190,11 @@ public class AUTO_gateRED extends LinearOpMode {
             flag2.set(true);
         }).start();
 
-        new Thread(()->{
-            base.MoveToLinear(0.45,0,-1300,0);
-        }).start();
-        sleep(3500);
+        base.MoveToSlowStart(0.45,0,-1300,0,0);
 
-        new Thread(()->{
-            base.MoveToLinear(0.4,0,0,-335);
-        }).start();
-        sleep(2050);
+
+        base.MoveToSlowStart(0.4,0,0,-335,0);
+
 
         while (!flag2.get()){
             telemetry.update();

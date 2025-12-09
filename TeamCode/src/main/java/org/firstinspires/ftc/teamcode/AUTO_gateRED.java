@@ -156,7 +156,7 @@ public class AUTO_gateRED extends LinearOpMode {
 
 
         new Thread(()->{
-            sleep(1250);//吸入电机预热，以避免转速不够
+            sleep(1250);//吸入电机预热，避免转速不够
             motor_intake.setPower(1);
         }).start();
         base.MoveToSlowStart(0.3,0,0,330,0);//原为332

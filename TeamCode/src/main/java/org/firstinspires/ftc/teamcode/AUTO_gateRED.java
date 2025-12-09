@@ -113,8 +113,7 @@ public class AUTO_gateRED extends LinearOpMode {
 
 
         //查看二维码
-        //base.MoveToSlowStart(0.55,-1150,-1150,0,0);
-        base.MoveToSlowStart(0.55,-1150,-1150,0);
+        base.MoveToSlowStart(0.55,-1175,-1175,0,0);
         int id = -1;
         while (id==-1){
             id = cam.AprilTag();
@@ -141,9 +140,9 @@ public class AUTO_gateRED extends LinearOpMode {
 
         new Thread(()->{
             //base.MoveToLinear(0.4,0,0,330);
-            base.MoveTo(0.3,0,0,330);
+            base.MoveToSlowStart(0.3,0,0,330,0);
         }).start();
-        sleep(1200);
+        sleep(3000);
 
         while(!flag.get()){
             telemetry.update();
@@ -156,25 +155,32 @@ public class AUTO_gateRED extends LinearOpMode {
         }
 
 
-        base.MoveToLinear(0.3,0,0,332);
+        new Thread(()->{
+            sleep(1250);//吸入电机预热，以避免转速不够
+            motor_intake.setPower(1);
+        }).start();
+        base.MoveToSlowStart(0.3,0,0,330,0);//原为332
 
         motor_upper.setPower(0);
         motor_lower.setPower(0);
-
+        //原motor_intake.setPower(1);位置
 
         telemetry.addData("now","begin");
         telemetry.update();
 
-        motor_intake.setPower(1);
-        base.MoveToSlowStart(0.5,0,1170,0);//700+120+350
+
+        base.MoveToSlowStart(0.4,0,1170,0,0);//700+120+350
 //        telemetry.addData("now","1 end");
 
         telemetry.addData("now","end");
         telemetry.update();
 
+        new Thread(()->{
+            sleep(2000);//控制吸球电机多转一会，以保证没有卡球情况
+            //发射2
+            motor_intake.setPower(0);
+        }).start();
 
-        //发射2
-        motor_intake.setPower(0);
         base.TURN(3,true);
 
         //顺序计算2
@@ -191,17 +197,16 @@ public class AUTO_gateRED extends LinearOpMode {
             flag2.set(true);
         }).start();
 
+        base.MoveToSlowStart(0.45,0,-1250,0,0);
 
-        base.MoveToSlowStart(0.45,0,-1300,0);
 
-        base.MoveToSlowStart(0.4,0,0,-335);
+        base.MoveToSlowStart(0.4,0,0,-335,0);
 
 
         while (!flag2.get()){
             telemetry.update();
         }
 
-        motor_intake.setPower(1);
         motor_upper.setPower(0.97);
         motor_lower.setPower(0.97);
         sleep(1000);

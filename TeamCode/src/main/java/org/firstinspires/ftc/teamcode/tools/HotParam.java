@@ -34,7 +34,7 @@ public class HotParam {
                     socket = new Socket(hostname, port);
                     connected = true;
                     System.out.println("成功连接到服务器!");
-                } catch (IOException _) {}
+                } catch (IOException  e) {}
 
                 if (!keepTry) break;
             }

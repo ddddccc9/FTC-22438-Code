@@ -1,19 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
-import java.io.IOException;
+
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import org.firstinspires.ftc.teamcode.tools.Base;
 import org.firstinspires.ftc.teamcode.tools.CameraTeam;
-import org.firstinspires.ftc.teamcode.tools.HotParam;
 import org.firstinspires.ftc.teamcode.tools.Tool;
 
 import java.util.concurrent.TimeUnit;
@@ -24,28 +22,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AUTO_gateRED extends LinearOpMode {
 
-    private final int READ_PERIOD = 1;
-
-    private HuskyLens huskyLens1;
-    private DcMotor lf;
-    private DcMotor lb;
-    private DcMotor rf;
-    private DcMotor rb;
     private DcMotorEx motor_upper;
     private DcMotorEx motor_lower;
     private DcMotor motor_intake;
-    private Servo lift;
-    private Servo turn;
 
     private Base base;
     private CameraTeam cam;
-    private PIDFCoefficients pid_fire;
 
     private int[] List_goal = {0, 0, 1};      //0是紫球 1是绿球  三个数分别是左中右
     private int[] List_current = {-1, -1, -1};  //0是紫球 1是绿球 -1是没球
 
     private int[] List_order = {0, 1, 2};    //数字是index，用于存储顺序
-    private Tool global_tool = new Tool();
+    private final Tool global_tool = new Tool();
 
 
     @Override
@@ -66,20 +54,21 @@ public class AUTO_gateRED extends LinearOpMode {
 
     }
     private void Init(){
-        huskyLens1 = hardwareMap.get(HuskyLens.class, "huskylens1");
+        HuskyLens huskyLens1 = hardwareMap.get(HuskyLens.class, "huskylens1");
 
 
+        int READ_PERIOD = 1;
         Deadline rateLimit = new Deadline(READ_PERIOD, TimeUnit.NANOSECONDS);
 
         // fS = hardwareMap.get(Servo.class, "fS");
 
-        lf = hardwareMap.get(DcMotor.class, "motor_lf");
-        lb = hardwareMap.get(DcMotor.class, "motor_lb");
-        rf = hardwareMap.get(DcMotor.class, "motor_rf");
-        rb = hardwareMap.get(DcMotor.class, "motor_rb");
+        DcMotor lf = hardwareMap.get(DcMotor.class, "motor_lf");
+        DcMotor lb = hardwareMap.get(DcMotor.class, "motor_lb");
+        DcMotor rf = hardwareMap.get(DcMotor.class, "motor_rf");
+        DcMotor rb = hardwareMap.get(DcMotor.class, "motor_rb");
 
-        turn = hardwareMap.get(Servo.class, "servo_turn");
-        lift = hardwareMap.get(Servo.class, "servo_lift");
+        Servo turn = hardwareMap.get(Servo.class, "servo_turn");
+        Servo lift = hardwareMap.get(Servo.class, "servo_lift");
 
         motor_upper = hardwareMap.get(DcMotorEx.class, "motor_upper");
         motor_lower = hardwareMap.get(DcMotorEx.class, "motor_lower");
@@ -90,7 +79,7 @@ public class AUTO_gateRED extends LinearOpMode {
 
         motor_intake = hardwareMap.get(DcMotor.class, "motor_intake");
 
-        base=new Base(lf,lb,rf,rb,lift,turn,1);
+        base=new Base(lf, lb, rf, rb, lift, turn,1);
         rateLimit.expire();
 
         if (!huskyLens1.knock()) {
@@ -103,7 +92,7 @@ public class AUTO_gateRED extends LinearOpMode {
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         huskyLens1.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
-        cam = new CameraTeam(CamId,webcamName,huskyLens1);
+        cam = new CameraTeam(CamId,webcamName, huskyLens1);
 
         telemetry.update();
 

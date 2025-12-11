@@ -109,6 +109,10 @@ public class AUTO_gateRED extends LinearOpMode {
 
     }
     private void Update(){
+        /*最新3次的更改：
+        1.156、157、220、221
+
+         */
         base.TURN(3,false);
 
 
@@ -150,8 +154,9 @@ public class AUTO_gateRED extends LinearOpMode {
         base.LIFT();
 
         for(int i=1;i<3;i++){
-            base.TURN(List_order[i]+3,true);
-            base.LIFT();
+            base.TURN(List_order[i]+3,false);//原为true
+            sleep(800);//手动延时，12.9原为500
+            base.LIFT(true,200);
         }
 
 
@@ -176,12 +181,13 @@ public class AUTO_gateRED extends LinearOpMode {
         telemetry.update();
 
         new Thread(()->{
-            sleep(2000);//控制吸球电机多转一会，以保证没有卡球情况
+            sleep(2000);//12.9控制吸球电机多转一会，以保证没有卡球情况
             //发射2
             motor_intake.setPower(0);
         }).start();
 
-        base.TURN(3,true);
+        //base.TURN(3,true);
+        //12.10发现这行没用，产生卡球情况。
 
         //顺序计算2
         AtomicBoolean flag2 = new AtomicBoolean(false);
@@ -213,8 +219,9 @@ public class AUTO_gateRED extends LinearOpMode {
         base.LIFT();
 
         for(int i=1;i<3;i++){
-            base.TURN(List_order[i]+3,true);
-            base.LIFT();
+            base.TURN(List_order[i]+3,false);//原为true
+            sleep(800);//手动延时，12.9原为500
+            base.LIFT(true,200);
         }
         motor_upper.setPower(0);
         motor_lower.setPower(0);

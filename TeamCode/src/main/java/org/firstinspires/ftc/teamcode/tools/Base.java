@@ -107,6 +107,26 @@ public class Base extends LinearOpMode{
         sleep(300);
     }
 
+    //12.10新增函数
+    public void LIFT(boolean sleep_300ms) {
+        lift.setPosition(0.3);
+        sleep(300);
+        lift.setPosition(0);
+        if(sleep_300ms) {
+            sleep(300);
+        }
+    }
+
+    //12.10新增函数
+    public void LIFT(boolean sleep_ms,int sleep_time) {
+        lift.setPosition(0.3);
+        sleep(300);
+        lift.setPosition(0);
+        if(sleep_ms) {
+            sleep(sleep_time);
+        }
+    }
+
     public void Move(double power,double x,double y,double angle){
         angle = -angle;
         x = -x;

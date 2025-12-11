@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.tools.Base;
 import org.firstinspires.ftc.teamcode.tools.Tool;
 
 @TeleOp(name = "TEST2",group="TELEOP")
+@Disabled
 public class TEST2 extends LinearOpMode {
 
     public Tool global_tool = new Tool();

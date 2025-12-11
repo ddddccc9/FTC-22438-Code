@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.dfrobot.HuskyLens;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 @TeleOp(name = "TURNTEST1", group = "Concept")
+@Disabled
 public class TURNTEST1 extends LinearOpMode {
 
     OpenCvCamera camera;

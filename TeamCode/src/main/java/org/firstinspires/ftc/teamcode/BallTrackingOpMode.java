@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @TeleOp(name = "Ball Tracking OpMode", group = "Vision")
+@Disabled
 public class BallTrackingOpMode extends LinearOpMode {
 
     private OpenCvCamera camera;

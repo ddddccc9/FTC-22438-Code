@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,9 +8,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.tools.Base;
 
+/**
+ * 这个代码是队友很强，我们不需要自动的代码
+ */
 
 @Autonomous(name = "AUTO_RED",group="Autonomous")
-
+@Disabled
 public class AUTO_RED extends LinearOpMode {
 
     private DcMotor lf;

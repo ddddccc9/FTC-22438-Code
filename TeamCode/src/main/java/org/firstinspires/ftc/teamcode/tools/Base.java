@@ -4,14 +4,17 @@
 package org.firstinspires.ftc.teamcode.tools;
 
 
-import static java.lang.Thread.sleep;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.teamcode.tools.Tool;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class Base extends LinearOpMode{
     private DcMotor motor_lf;
@@ -85,6 +88,12 @@ public class Base extends LinearOpMode{
     }
 
 
+    /**
+     * 转盘旋转函数
+     *
+     * @param id 转到第几位 范围可以0-5
+     * @param T 是否等待1秒，也就是等待转盘旋转完毕
+     */
     public void TURN(int id,boolean T) {
         turn.setPosition(Data_turn[id]);
         if(T) {
@@ -105,26 +114,6 @@ public class Base extends LinearOpMode{
         sleep(300);
         lift.setPosition(0);
         sleep(300);
-    }
-
-    //12.10新增函数
-    public void LIFT(boolean sleep_300ms) {
-        lift.setPosition(0.3);
-        sleep(300);
-        lift.setPosition(0);
-        if(sleep_300ms) {
-            sleep(300);
-        }
-    }
-
-    //12.10新增函数
-    public void LIFT(boolean sleep_ms,int sleep_time) {
-        lift.setPosition(0.3);
-        sleep(300);
-        lift.setPosition(0);
-        if(sleep_ms) {
-            sleep(sleep_time);
-        }
     }
 
     public void Move(double power,double x,double y,double angle){
@@ -233,7 +222,36 @@ public class Base extends LinearOpMode{
 
 
     }
-    public void MoveToSlowStart(double TargetPower,int x,int y,int angle,int time){
+
+    //12.10新增函数
+    public void LIFT(boolean sleep_300ms) {
+        lift.setPosition(0.3);
+        sleep(300);
+        lift.setPosition(0);
+        if(sleep_300ms) {
+            sleep(300);
+        }
+    }
+
+    //12.10新增函数
+    public void LIFT(boolean sleep_ms,int sleep_time) {
+        lift.setPosition(0.3);
+        sleep(300);
+        lift.setPosition(0);
+        if(sleep_ms) {
+            sleep(sleep_time);
+        }
+    }
+
+    private double cal_power(double[] line1,double[] line2,double percent,double TargetPower){
+        double power=TargetPower;
+        if(percent<0.2) power = percent*line1[0]+line1[1];
+        else if(percent>0.8) power = percent*line2[0]+line2[1];
+        return power;
+    }
+
+
+    public void MoveToSlowStart(double TargetPower,int x,int y,int angle){
         LF= motor_lf.getCurrentPosition();
         LB=motor_lb.getCurrentPosition();
         RF=motor_rf.getCurrentPosition();
@@ -251,59 +269,40 @@ public class Base extends LinearOpMode{
 
 
         for (double i=0;i<TargetPower;i+=0.02) {
-            motor_lf.setPower(TargetPower);
-            motor_lb.setPower(TargetPower);
-            motor_rf.setPower(TargetPower);
-            motor_rb.setPower(TargetPower);
-            sleep(100);
+            motor_lf.setPower(i);
+            motor_lb.setPower(i);
+            motor_rf.setPower(i);
+            motor_rb.setPower(i);
+            sleep(50);
         }
+        int s1 = (int)((TargetPower/0.01)*100*TargetPower/2);
+        int s2 = (int)(((TargetPower-0.16)/0.02)*100*TargetPower/2);
 
         motor_lf.setPower(TargetPower);
         motor_lb.setPower(TargetPower);
         motor_rf.setPower(TargetPower);
         motor_rb.setPower(TargetPower);
 
-        if(time>0){
-            sleep(time);
+        sleep((int)(Math.abs(s1-s2)/TargetPower/10));
+
+        for (double i=TargetPower;i>0.16;i-=0.03) {
+            motor_lf.setPower(i);
+            motor_lb.setPower(i);
+            motor_rf.setPower(i);
+            motor_rb.setPower(i);
+            sleep(50);
         }
-        else{
-            double p = TargetPower;
-            while ((motor_lf.isBusy()|| motor_lb.isBusy())){
-                double percent=0.01;
-                if(motor_lf.getTargetPosition() != 0){
-                    percent= (double) (motor_lf.getCurrentPosition() - LF) /(y + (x + angle));
-                }
-                else{
-                    percent= (double) (motor_rf.getCurrentPosition() - RF) /(y - (x + angle));
-                }
 
-                if(percent>0.5){
-                    p-=0.01;
-                    if(p<0.1) p=0.1;
-                    motor_lf.setPower(p);
-                    motor_lb.setPower(p);
-                    motor_rf.setPower(p);
-                    motor_rb.setPower(p);
-                }
 
+        int num=1000000;//10^6
+        DcMotor[] M = {motor_lf,motor_lb,motor_rf,motor_rb};
+        while (num>10){
+            num = 0;
+            for(DcMotor e:M){
+                num = Math.max(num,Math.abs(e.getTargetPosition()-e.getCurrentPosition()));
             }
         }
 
-
-
-
-
-
-
-
-
-    }
-
-    private double cal_power(double[] line1,double[] line2,double percent,double TargetPower){
-        double power=TargetPower;
-        if(percent<0.2) power = percent*line1[0]+line1[1];
-        else if(percent>0.8) power = percent*line2[0]+line2[1];
-        return power;
     }
 
 

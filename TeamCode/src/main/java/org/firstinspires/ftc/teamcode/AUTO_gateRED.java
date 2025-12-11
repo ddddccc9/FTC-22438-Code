@@ -117,7 +117,7 @@ public class AUTO_gateRED extends LinearOpMode {
 
 
         //查看二维码
-        base.MoveToSlowStart(0.55,-1175,-1175,0,0);
+        base.MoveToSlowStart(0.55,-1175,-1175,0);
         int id = -1;
         while (id==-1){
             id = cam.AprilTag();
@@ -144,7 +144,7 @@ public class AUTO_gateRED extends LinearOpMode {
 
         new Thread(()->{
             //base.MoveToLinear(0.4,0,0,330);
-            base.MoveToSlowStart(0.3,0,0,330,0);
+            base.MoveToSlowStart(0.3,0,0,330);
         }).start();
         sleep(3000);
 
@@ -164,7 +164,7 @@ public class AUTO_gateRED extends LinearOpMode {
             sleep(1250);//吸入电机预热，避免转速不够
             motor_intake.setPower(1);
         }).start();
-        base.MoveToSlowStart(0.3,0,0,330,0);//原为332
+        base.MoveToSlowStart(0.3,0,0,330);//原为332
 
         motor_upper.setPower(0);
         motor_lower.setPower(0);
@@ -174,7 +174,7 @@ public class AUTO_gateRED extends LinearOpMode {
         telemetry.update();
 
 
-        base.MoveToSlowStart(0.4,0,1170,0,0);//700+120+350
+        base.MoveToSlowStart(0.4,0,1170,0);//700+120+350
 //        telemetry.addData("now","1 end");
 
         telemetry.addData("now","end");
@@ -203,10 +203,10 @@ public class AUTO_gateRED extends LinearOpMode {
             flag2.set(true);
         }).start();
 
-        base.MoveToSlowStart(0.45,0,-1250,0,0);
+        base.MoveToSlowStart(0.45,0,-1250,0);
 
 
-        base.MoveToSlowStart(0.4,0,0,-335,0);
+        base.MoveToSlowStart(0.4,0,0,-335);
 
 
         while (!flag2.get()){
